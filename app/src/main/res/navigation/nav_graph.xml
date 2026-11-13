@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="ke.co.mwalimuai.ui.HomeFragment"
+        android:label="CBE"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_curriculum"
+            app:destination="@id/navigation_curriculum" />
+        <action
+            android:id="@+id/action_home_to_planner"
+            app:destination="@id/navigation_planner" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_curriculum"
+        android:name="ke.co.mwalimuai.ui.Grade6MathFragment"
+        android:label="CBE Curriculum"
+        tools:layout="@layout/fragment_grade6_math" />
+
+    <fragment
+        android:id="@+id/navigation_planner"
+        android:name="ke.co.mwalimuai.ui.LessonPlannerFragment"
+        android:label="CBE Lesson Plan"
+        tools:layout="@layout/fragment_lesson_planner">
+        <action
+            android:id="@+id/action_planner_to_preview"
+            app:destination="@id/navigation_preview" />
+        <action
+            android:id="@+id/action_planner_to_saved"
+            app:destination="@id/navigation_saved" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_preview"
+        android:name="ke.co.mwalimuai.ui.LessonPreviewFragment"
+        android:label="Lesson Plan Preview"
+        tools:layout="@layout/fragment_lesson_preview">
+        <action
+            android:id="@+id/action_preview_to_planner"
+            app:destination="@id/navigation_planner"
+            app:popUpTo="@id/navigation_planner"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_preview_to_saved"
+            app:destination="@id/navigation_saved" />
+        <action
+            android:id="@+id/action_preview_to_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_saved"
+        android:name="ke.co.mwalimuai.ui.SavedLessonsFragment"
+        android:label="Saved Lesson Plans"
+        tools:layout="@layout/fragment_saved_lessons">
+        <action
+            android:id="@+id/action_saved_to_preview"
+            app:destination="@id/navigation_preview" />
+    </fragment>
+
+</navigation>

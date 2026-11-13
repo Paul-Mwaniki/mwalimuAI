@@ -1,0 +1,65 @@
+# Built application files
+*.apk
+*.aab
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+release/
+
+# Gradle files & build directories
+.gradle/
+**/build/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration file (sdk.dir, ndk.dir, etc.)
+local.properties
+
+# Android Studio / IntelliJ IDEA files
+*.iml
+*.ipr
+*.iws
+.idea/
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+*.hprof
+
+# Keystore & signing files (never commit private keys)
+*.jks
+*.keystore
+keystore.properties
+
+# Training / Python / Large Model Artifacts
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+venv/
+.venv/
+*.gguf
+*.bin
+*.pt
+*.pth
+*.safetensors
+training/mwalimu_slm_output/
+training/lora_model/
+
+# OS-specific & temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+*.tmp
+*.temp
+*~

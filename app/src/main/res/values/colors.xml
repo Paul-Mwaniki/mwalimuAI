@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Mwalimu AI Primary Palette (Kenyan Green & Ochre) -->
+    <color name="primary">#1B5E20</color>
+    <color name="primary_dark">#0E3813</color>
+    <color name="primary_light">#4C8C4A</color>
+    <color name="primary_container">#DCFCE7</color>
+    <color name="on_primary_container">#14532D</color>
+
+    <color name="secondary">#D97706</color>
+    <color name="secondary_dark">#B45309</color>
+    <color name="secondary_light">#FBBF24</color>
+    <color name="secondary_container">#FEF3C7</color>
+    <color name="on_secondary_container">#78350F</color>
+
+    <color name="tertiary">#0284C7</color>
+    <color name="tertiary_container">#E0F2FE</color>
+    <color name="on_tertiary_container">#0369A1</color>
+
+    <color name="background">#F8FAFC</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F1F5F9</color>
+    <color name="border_light">#E2E8F0</color>
+
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_muted">#94A3B8</color>
+
+    <!-- TinyML Rating / Badges -->
+    <color name="rating_excellent">#16A34A</color>
+    <color name="rating_good">#2563EB</color>
+    <color name="rating_moderate">#D97706</color>
+    <color name="rating_low">#DC2626</color>
+
+    <!-- Card Accents -->
+    <color name="accent_math">#4F46E5</color>
+    <color name="accent_game">#EA580C</color>
+    <color name="accent_assessment">#0D9488</color>
+    <color name="accent_chat">#0284C7</color>
+</resources>

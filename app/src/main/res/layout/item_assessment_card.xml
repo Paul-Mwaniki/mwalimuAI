@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp"
+    app:strokeColor="@color/border_light"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvAssessmentType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_verified"
+                android:backgroundTint="#CCFBF1"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:text="Observation / Exit Ticket"
+                android:textColor="#0F766E"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvAssessmentCurriculumId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="G6-MATH-11"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvAssessmentPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Assessment Task: Demonstrate place value up to millions using stones and cards."
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvEvidence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Evidence: Learner correctly groups and justifies value representation."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <!-- 4-Level Rubric Table Box -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/surface_variant"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvRubricExceeds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="★ Exceeds (EE): Accurate solution + independent extension."
+                android:textColor="#16A34A"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvRubricMeets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="✔ Meets (ME): Correct method and clear justification."
+                android:textColor="#2563EB"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvRubricApproaching"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="▲ Approaching (AE): Partial method or requires guidance."
+                android:textColor="#D97706"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvRubricBelow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="● Below (BE): Needs continuous teacher modeling."
+                android:textColor="#DC2626"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

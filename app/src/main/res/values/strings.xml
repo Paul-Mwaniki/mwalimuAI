@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CBE</string>
+    <string name="app_subtitle">Kenyan Grade 6 Math CBE Assistant</string>
+    <string name="splash_motto">Offline-First Intelligent CBE Lesson Planner &amp; Curriculum Guide</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_curriculum">Curriculum</string>
+    <string name="nav_planner">Lesson Plan</string>
+    <string name="nav_activities">Activities</string>
+    <string name="nav_saved">Saved</string>
+    
+    <!-- Quick Actions / Features -->
+    <string name="action_create_lesson">Lesson Plan</string>
+    <string name="action_browse_curriculum">Offline Curriculum</string>
+    <string name="action_browse_activities">Learning Activities</string>
+    <string name="action_gamification">Math Games</string>
+    <string name="action_assessment">Assessment Rubrics</string>
+    <string name="action_offline_chat">Mwalimu Chat Assistant</string>
+    <string name="action_tinyml_test">Verify TinyML Model</string>
+    
+    <!-- Lesson Planner Form -->
+    <string name="prompt_select_strand">Select Strand</string>
+    <string name="prompt_select_substrand">Select Sub-strand</string>
+    <string name="prompt_duration">Lesson Duration (mins)</string>
+    <string name="prompt_class_size">Class Size (Learners)</string>
+    <string name="prompt_resources">Available Resources</string>
+    <string name="prompt_learning_need">Learner Focus / Need</string>
+    <string name="prompt_electricity">Electricity Available?</string>
+    <string name="prompt_internet">Internet Available?</string>
+    <string name="btn_generate_lesson">Generate CBE Lesson Plan</string>
+    <string name="btn_export_word">Export to Word (.docx)</string>
+    <string name="btn_export_pdf">Export to PDF</string>
+    <string name="btn_save_lesson">Save Lesson Plan</string>
+
+    <!-- TinyML Info -->
+    <string name="tinyml_status_ready">TinyML Model Active (Optimized TFLite)</string>
+    <string name="tinyml_suitability_label">TinyML Suitability Score</string>
+</resources>

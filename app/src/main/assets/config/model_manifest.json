@@ -1,0 +1,22 @@
+{
+  "model": "mwalimu_activity_ranker_optimized.tflite",
+  "task": "synthetic activity suitability regression",
+  "input_shape": [
+    1,
+    35
+  ],
+  "input_dtype": "float32",
+  "output_shape": [
+    1,
+    1
+  ],
+  "output_range": [
+    0,
+    1
+  ],
+  "display_score_formula": "1 + 4 * model_output",
+  "preprocessing_file": "preprocessing.json",
+  "training_data": "synthetic labels; educator review required",
+  "android_note": "Filter infeasible activities first (time/materials/electricity), then score feasible candidates.",
+  "sha256": "98164f7ec9eb51f0edddca407f50ed2ae5be490e6967f1c5246e5191b1e5487f"
+}

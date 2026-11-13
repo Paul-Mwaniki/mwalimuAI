@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "numeric_order": [
+    "grade",
+    "class_size",
+    "available_minutes",
+    "activity_duration_minutes",
+    "electricity_available",
+    "internet_available"
+  ],
+  "categorical_order": [
+    "topic",
+    "available_resources",
+    "learning_need",
+    "strategy"
+  ],
+  "means": {
+    "grade": 6.0,
+    "class_size": 44.0,
+    "available_minutes": 17.4,
+    "activity_duration_minutes": 13.4,
+    "electricity_available": 0.0,
+    "internet_available": 0.0
+  },
+  "stds": {
+    "grade": 1.0,
+    "class_size": 14.2828568570857,
+    "available_minutes": 7.1442284397966835,
+    "activity_duration_minutes": 4.004996878900168,
+    "electricity_available": 1.0,
+    "internet_available": 1.0
+  },
+  "vocabularies": {
+    "topic": [
+      "3-D Objects",
+      "Angles",
+      "Bar Graphs",
+      "Division",
+      "Fractions",
+      "Inequalities",
+      "Length",
+      "Lines",
+      "Time"
+    ],
+    "available_resources": [
+      "bottle tops and paper",
+      "no extra materials",
+      "paper and chalkboard",
+      "ruler and paper",
+      "stones and chalkboard"
+    ],
+    "learning_need": [
+      "extension",
+      "large class",
+      "limited materials",
+      "mixed ability",
+      "needs scaffolding"
+    ],
+    "strategy": [
+      "Community problem solving",
+      "Error detective",
+      "Exit-ticket challenge",
+      "Gallery walk",
+      "Learning game",
+      "Manipulative exploration",
+      "Market role-play",
+      "Peer teaching",
+      "Station rotation",
+      "Think-pair-share"
+    ]
+  },
+  "unknown_category": "all-zero vector for unseen categories",
+  "score_range": [
+    1,
+    5
+  ],
+  "input_type": "float32",
+  "note": "Use exactly this feature ordering in Android. Apply hard constraints outside the neural model.",
+  "input_dimension": 35
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Mwalimu AI Grade 6 Mathematics",
+  "version": "0.1.0-prototype",
+  "curriculum_document_year": 2021,
+  "generated_examples_are_synthetic": true,
+  "expert_validated": false,
+  "counts": {
+    "Curriculum": 16,
+    "Activities": 160,
+    "Gamification": 64,
+    "Lesson_Plans": 48,
+    "Assessments": 160,
+    "Recommendation_Labels": 800,
+    "Teacher_AI_Prompts": 96,
+    "Evaluation_Cases": 80
+  }
+}

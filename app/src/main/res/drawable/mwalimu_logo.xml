@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+  <!-- Circular Base -->
+  <path
+      android:fillColor="#1B5E20"
+      android:pathData="M48,48m-44,0a44,44 0,1 1,88 0a44,44 0,1 1,-88 0"/>
+  <!-- Graduation / Mwalimu Cap -->
+  <path
+      android:fillColor="#FEF3C7"
+      android:pathData="M48,22 L78,36 L48,50 L18,36 Z"/>
+  <path
+      android:fillColor="#FBBF24"
+      android:pathData="M32,44 L32,58 C32,66 64,66 64,58 L64,44 L48,51 Z"/>
+  <!-- Math Spark / Chip Motif -->
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M44,66 h8 v4 h-8 z M46,74 h4 v4 h-4 z"/>
+</vector>
