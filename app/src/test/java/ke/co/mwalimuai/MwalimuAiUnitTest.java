@@ -282,8 +282,8 @@ public class MwalimuAiUnitTest {
 
         // 2. SNE Specific Learning Outcomes (KSL & visual arrangement)
         assertTrue("Outcomes must include KSL", lesson.getLearningObjective().contains("Kenya Sign Language (KSL)"));
-        assertTrue("Outcomes must specify visual arrangement without auditory dependence",
-                lesson.getLearningObjective().contains("visual arrangement without auditory dependence"));
+        assertTrue("Outcomes must specify without auditory reliance",
+                lesson.getLearningObjective().contains("without auditory reliance"));
 
         // 3. SNE Resources (desk action cards & horseshoe layout)
         assertTrue("Resources must include 3-color desk action cards",

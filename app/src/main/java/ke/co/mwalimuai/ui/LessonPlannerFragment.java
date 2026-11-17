@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,38 +38,7 @@ public class LessonPlannerFragment extends Fragment {
     private final List<String> subStrandTitles = new ArrayList<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private boolean isGeneratingInitiated = false;
-
-    private final String[] resourceOptions = {
-            "paper and chalkboard",
-            "bottle tops and paper",
-            "stones and chalkboard",
-            "ruler and paper",
-            "number cards and counters",
-            " sticks, strings and cartons",
-            "no extra materials",
-            "Custom / Add Own Materials..."
-    };
-
-    private final String[] learningNeedOptions = {
-            "Universal Inclusive (Mixed Abilities & SNE Scaffolding)",
-            "Visual Impairment / Blind (Tactile Knotted Ropes & Audio Guide)",
-            "Hearing Impairment / Deaf (KSL Sign Glosses & Visual Desk Cards)",
-            "Dyslexia & Reading Difficulties (Symbolic Storyboards & Color Cues)",
-            "Dyscalculia (Concrete CPA, Dot Math & Ten-Frames)",
-            "ADHD & Attention Focus (3-Min Micro-Intervals & Kinesthetic Roles)",
-            "Motor / Physical Challenges (Adapted Grips & Peer Scribing)",
-            "Large Inclusive Class (45+ Learners with SNE Squad Roles)"
-    };
-
-    private final String[] strategyOptions = {
-            "Recommended Best Fit (Auto-Select)",
-            "Manipulative exploration (Hands-on)",
-            "Think-pair-share (Peer Discussion)",
-            "Learning game (Classroom Game)",
-            "Market role-play (Real-world simulation)",
-            "Station rotation (Squad Zones)",
-            "Custom Activity / Hook"
-    };
+    private String selectedSNEProfile = "Hearing Impairment / Deaf (KSL Sign Glosses & Visual Desk Cards)";
 
     /**
      * ArrayAdapter that never filters out non-matching items when an AutoCompleteTextView
@@ -117,35 +87,17 @@ public class LessonPlannerFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(LessonViewModel.class);
 
-        setupDropdowns();
+        Bundle args = getArguments();
+        String incomingSNE = args != null ? args.getString("selectedSNE") : null;
+        if (incomingSNE != null && !incomingSNE.isEmpty()) {
+            selectedSNEProfile = incomingSNE;
+        }
+        updateSNEBanner(selectedSNEProfile);
         loadCurriculumEntities();
 
         binding.btnGeneratePlan.setOnClickListener(v -> generatePlan());
-        binding.btnGenerateFreeForm.setOnClickListener(v -> generateFromFreeFormPrompt());
         binding.btnViewSavedLessons.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_planner_to_saved));
-
-        // Allow pressing Enter / Send on the keyboard inside the Free-Form Prompt box
-        binding.etFreeFormPrompt.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEND
-                    || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE
-                    || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO
-                    || (event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER
-                    && event.getAction() == android.view.KeyEvent.ACTION_DOWN)) {
-                generateFromFreeFormPrompt();
-                return true;
-            }
-            return false;
-        });
-
-        binding.etFreeFormPrompt.setOnKeyListener((v, keyCode, event) -> {
-            if (keyCode == android.view.KeyEvent.KEYCODE_ENTER
-                    && event.getAction() == android.view.KeyEvent.ACTION_DOWN) {
-                generateFromFreeFormPrompt();
-                return true;
-            }
-            return false;
-        });
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
                 new androidx.activity.OnBackPressedCallback(true) {
@@ -177,6 +129,40 @@ public class LessonPlannerFragment extends Fragment {
         });
     }
 
+    private void updateSNEBanner(String sneProfile) {
+        if (binding == null) return;
+        String lower = sneProfile != null ? sneProfile.toLowerCase(Locale.ROOT) : "";
+        if (lower.contains("deaf") || lower.contains("hearing") || lower.contains("ksl")) {
+            binding.tvActiveSNEIcon.setText("👂");
+            binding.tvActiveSNETitle.setText("Hearing Impairment / Deaf (KSL)");
+            binding.tvActiveSNESubtitle.setText("KICD Grade 6 SNE: KSL Signs, Visual Pods & 3-Color Desk Cards");
+        } else if (lower.contains("blind") || lower.contains("low vision") || lower.contains("visual impair")) {
+            binding.tvActiveSNEIcon.setText("👁️");
+            binding.tvActiveSNETitle.setText("Visual Impairment / Blind (Tactile)");
+            binding.tvActiveSNESubtitle.setText("Tactile Knotted Ropes, Embossed Boundaries & Audio Guide");
+        } else if (lower.contains("dyslexi") || lower.contains("reading")) {
+            binding.tvActiveSNEIcon.setText("📖");
+            binding.tvActiveSNETitle.setText("Dyslexia & Reading Difficulties");
+            binding.tvActiveSNESubtitle.setText("Visual Storyboards, Color-Coded Cues & Reduced Text");
+        } else if (lower.contains("dyscalculi") || lower.contains("number struggle")) {
+            binding.tvActiveSNEIcon.setText("🧮");
+            binding.tvActiveSNETitle.setText("Dyscalculia (Math Difficulties)");
+            binding.tvActiveSNESubtitle.setText("Concrete CPA Progression, Dot Math & Ten-Frames");
+        } else if (lower.contains("adhd") || lower.contains("focus") || lower.contains("attention")) {
+            binding.tvActiveSNEIcon.setText("⚡");
+            binding.tvActiveSNETitle.setText("ADHD & Attention Focus");
+            binding.tvActiveSNESubtitle.setText("3-Minute Micro-Intervals & Active Kinesthetic Roles");
+        } else if (lower.contains("motor") || lower.contains("physical")) {
+            binding.tvActiveSNEIcon.setText("♿");
+            binding.tvActiveSNETitle.setText("Motor & Physical Challenges");
+            binding.tvActiveSNESubtitle.setText("Adapted Manipulative Grips & Peer Scribe Protocol");
+        } else {
+            binding.tvActiveSNEIcon.setText("🌟");
+            binding.tvActiveSNETitle.setText("Universal Inclusive SNE");
+            binding.tvActiveSNESubtitle.setText("Multi-Tier Differentiated Scaffolding");
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -203,56 +189,8 @@ public class LessonPlannerFragment extends Fragment {
         }
     }
 
-    private void setupDropdowns() {
-        bindDropdownAdapters();
-
-        Bundle args = getArguments();
-        String incomingSNE = args != null ? args.getString("selectedSNE") : null;
-        if (incomingSNE != null && !incomingSNE.isEmpty()) {
-            binding.actvLearningNeed.setText(incomingSNE, false);
-        } else if (binding.actvLearningNeed.getText().toString().isEmpty()) {
-            binding.actvLearningNeed.setText(learningNeedOptions[0], false);
-        }
-
-        if (binding.actvResources.getText().toString().isEmpty()) {
-            binding.actvResources.setText(resourceOptions[0], false);
-        }
-        if (binding.actvStrategy.getText().toString().isEmpty()) {
-            binding.actvStrategy.setText(strategyOptions[0], false);
-        }
-
-        binding.actvResources.setOnItemClickListener((parent, view1, position, id) -> {
-            String selected = resourceOptions[position].trim();
-            boolean isCustom = "Custom / Add Own Materials...".equals(selected);
-            binding.tilCustomResources.setVisibility(isCustom ? View.VISIBLE : View.GONE);
-            if (isCustom) {
-                binding.etCustomResources.requestFocus();
-            }
-        });
-
-        binding.actvStrategy.setOnItemClickListener((parent, view1, position, id) -> {
-            String selected = strategyOptions[position];
-            if ("Custom Activity / Hook".equals(selected)) {
-                binding.etCustomHook.requestFocus();
-            }
-        });
-    }
-
     private void bindDropdownAdapters() {
         if (getContext() == null || binding == null) return;
-
-        UnfilteredArrayAdapter resAdapter = new UnfilteredArrayAdapter(
-                requireContext(), android.R.layout.simple_dropdown_item_1line, Arrays.asList(resourceOptions));
-        binding.actvResources.setAdapter(resAdapter);
-
-        UnfilteredArrayAdapter needAdapter = new UnfilteredArrayAdapter(
-                requireContext(), android.R.layout.simple_dropdown_item_1line, Arrays.asList(learningNeedOptions));
-        binding.actvLearningNeed.setAdapter(needAdapter);
-
-        UnfilteredArrayAdapter stratAdapter = new UnfilteredArrayAdapter(
-                requireContext(), android.R.layout.simple_dropdown_item_1line, Arrays.asList(strategyOptions));
-        binding.actvStrategy.setAdapter(stratAdapter);
-
         if (!subStrandTitles.isEmpty()) {
             UnfilteredArrayAdapter subStrandAdapter = new UnfilteredArrayAdapter(
                     requireContext(), android.R.layout.simple_dropdown_item_1line, subStrandTitles);
@@ -312,48 +250,11 @@ public class LessonPlannerFragment extends Fragment {
         } catch (Exception ignored) {}
     }
 
-    private void generateFromFreeFormPrompt() {
-        String freePrompt = binding.etFreeFormPrompt.getText() != null
-                ? binding.etFreeFormPrompt.getText().toString().trim() : "";
-        if (freePrompt.isEmpty()) {
-            binding.tilFreeFormPrompt.setError("Please enter your lesson request or materials (e.g. Area of a triangle using strings and boxes)");
-            binding.etFreeFormPrompt.requestFocus();
-            return;
-        }
-        binding.tilFreeFormPrompt.setError(null);
-        hideKeyboard();
-
-        CurriculumEntity selectedDropdownCurr = null;
-        String subStrandText = binding.actvSubStrand.getText() != null
-                ? binding.actvSubStrand.getText().toString() : "";
-        for (CurriculumEntity c : curriculumList) {
-            if (subStrandText.contains(c.getSubStrand())) {
-                selectedDropdownCurr = c;
-                break;
-            }
-        }
-        // Only override with dropdown if user explicitly changed dropdown away from 1.1 Whole numbers
-        CurriculumEntity fallbackCurr = (selectedDropdownCurr != null && !"1.1".equals(selectedDropdownCurr.getSubStrandCode()))
-                ? selectedDropdownCurr : null;
-
-        LessonGenerator.LessonPlanningParameters params =
-                LessonGenerator.parseFreeFormPrompt(freePrompt, curriculumList, fallbackCurr);
-
-        isGeneratingInitiated = true;
-        viewModel.generateLessonPlan(params);
-    }
-
     private void generatePlan() {
         hideKeyboard();
-        // If the teacher typed a free-form prompt at the top and tapped the bottom Generate button, honor their free-form prompt!
-        String topFreePrompt = binding.etFreeFormPrompt.getText() != null
-                ? binding.etFreeFormPrompt.getText().toString().trim() : "";
-        if (!topFreePrompt.isEmpty()) {
-            generateFromFreeFormPrompt();
-            return;
-        }
 
-        String subStrandText = binding.actvSubStrand.getText().toString();
+        String subStrandText = binding.actvSubStrand.getText() != null
+                ? binding.actvSubStrand.getText().toString() : "";
         if (subStrandText.isEmpty() || curriculumList.isEmpty()) {
             Toast.makeText(requireContext(), "Please select a curriculum topic", Toast.LENGTH_SHORT).show();
             return;
@@ -371,28 +272,13 @@ public class LessonPlannerFragment extends Fragment {
         int duration = 40;
         try {
             duration = Integer.parseInt(binding.etDuration.getText().toString().trim());
-        } catch (NumberFormatException ignored) {}
+        } catch (Exception ignored) {}
 
-        int classSize = 45;
+        int classSize = 48;
         try {
             classSize = Integer.parseInt(binding.etClassSize.getText().toString().trim());
-        } catch (NumberFormatException ignored) {}
+        } catch (Exception ignored) {}
 
-        String selectedResources = binding.actvResources.getText().toString().trim();
-        if ("Custom / Add Own Materials...".equals(selectedResources)) {
-            String custom = binding.etCustomResources.getText() != null
-                    ? binding.etCustomResources.getText().toString().trim() : "";
-            if (custom.isEmpty()) {
-                binding.tilCustomResources.setError("Please specify your local materials");
-                binding.etCustomResources.requestFocus();
-                return;
-            } else {
-                binding.tilCustomResources.setError(null);
-                selectedResources = custom;
-            }
-        }
-
-        String selectedStrategy = binding.actvStrategy.getText().toString();
         String customHook = binding.etCustomHook.getText() != null
                 ? binding.etCustomHook.getText().toString().trim() : "";
 
@@ -400,12 +286,9 @@ public class LessonPlannerFragment extends Fragment {
         params.curriculum = selectedCurr;
         params.durationMinutes = duration;
         params.classSize = classSize;
-        params.availableResources = selectedResources;
-        params.learningNeed = binding.actvLearningNeed.getText().toString();
-        params.selectedActivityStrategy = selectedStrategy;
+        params.availableResources = "chalkboard visual diagrams and geometric representations";
+        params.learningNeed = selectedSNEProfile;
         params.customActivityOrHook = customHook;
-        params.electricity = binding.switchElectricity.isChecked();
-        params.internet = binding.switchInternet.isChecked();
 
         isGeneratingInitiated = true;
         viewModel.generateLessonPlan(params);

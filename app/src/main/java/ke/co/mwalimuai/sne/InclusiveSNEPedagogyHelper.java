@@ -244,6 +244,20 @@ public class InclusiveSNEPedagogyHelper {
         }
     }
 
+    public static String getKslShortLabel(String subStrand) {
+        String s = subStrand != null ? subStrand.toLowerCase(Locale.ROOT) : "";
+        if (s.contains("area")) return "ENEO PEMBETATU";
+        if (s.contains("fraction")) return "SEHEMU";
+        if (s.contains("decimal")) return "DESIMALI";
+        if (s.contains("multipl")) return "ZIDISHA";
+        if (s.contains("divis")) return "GAWA";
+        if (s.contains("length")) return "UREFU NA MZUNGUKO";
+        if (s.contains("capacity")) return "UJAZO";
+        if (s.contains("mass")) return "UZITO";
+        if (s.contains("money")) return "FEDHA";
+        return "HISABATI";
+    }
+
     public static String getKiswahiliMathGloss(String subStrand) {
         String s = subStrand != null ? subStrand.toLowerCase(Locale.ROOT) : "";
         if (s.contains("area")) return "Hisabati ya KICD: Eneo la Pembetatu (Eneo = ½ × Tako × Kimo)";
@@ -280,19 +294,19 @@ public class InclusiveSNEPedagogyHelper {
         String baseName = capitalize(subStrand);
         switch (profile) {
             case DEAF_HARD_OF_HEARING:
-                return "SNE (Hearing Impairment / KSL) — " + baseName + " — " + contextDesc;
+                return "SNE (Hearing Impairment / KSL) — Grade 6 " + baseName + " (pp. " + pages + ")";
             case BLIND_LOW_VISION:
-                return "SNE (Visual Impairment / Tactile) — " + baseName + " — " + contextDesc;
+                return "SNE (Visual Impairment / Tactile) — Grade 6 " + baseName + " (pp. " + pages + ")";
             case DYSLEXIA:
-                return "SNE (Dyslexia / Visual Storyboard) — " + baseName + " — " + contextDesc;
+                return "SNE (Dyslexia / Visual Storyboard) — Grade 6 " + baseName + " (pp. " + pages + ")";
             case DYSCALCULIA:
-                return "SNE (Dyscalculia / CPA Concrete) — " + baseName + " — " + contextDesc;
+                return "SNE (Dyscalculia / CPA Concrete) — Grade 6 " + baseName + " (pp. " + pages + ")";
             case ADHD_EXECUTIVE_FUNCTION:
-                return "SNE (ADHD / Micro-Interval Focus) — " + baseName + " — " + contextDesc;
+                return "SNE (ADHD / Micro-Interval Focus) — Grade 6 " + baseName + " (pp. " + pages + ")";
             case MOTOR_PHYSICAL:
-                return "SNE (Motor Adaptation / Peer Scribe) — " + baseName + " — " + contextDesc;
+                return "SNE (Motor Adaptation / Peer Scribe) — Grade 6 " + baseName + " (pp. " + pages + ")";
             default:
-                return "SNE Lesson Plan: " + baseName + " — " + contextDesc;
+                return "SNE Lesson Plan: Grade 6 " + baseName + " (pp. " + pages + ")";
         }
     }
 
@@ -310,24 +324,23 @@ public class InclusiveSNEPedagogyHelper {
 
         switch (profile) {
             case DEAF_HARD_OF_HEARING:
-                sb.append("1. Kenya Sign Language (KSL) & Concept Recognition:\n")
-                        .append("   Identify and sign mathematical concepts for ").append(subStrand)
+                sb.append("1. Kenya Sign Language (KSL) & Mathematical Vocabulary:\n")
+                        .append("   Identify, understand, and sign mathematical concepts for ").append(subStrand)
                         .append(" in KSL (").append(getKslMathGloss(subStrand)).append(").\n\n")
-                        .append("2. Visual & Concrete Manipulation with ").append(capitalize(localRes)).append(":\n")
-                        .append("   Use ").append(localRes).append(" in visual pods of ").append(squadSize)
-                        .append(" to model and solve the ").append(contextDesc)
-                        .append(" problem purely through visual arrangement without auditory dependence.\n\n")
-                        .append("3. Peer Signing & Practical Application:\n")
-                        .append("   Sign mathematical reasoning to a desk partner using 3-color desk action cards and solve everyday practical measurement challenges.");
+                        .append("2. Visual & Concrete Spatial Modeling:\n")
+                        .append("   In visual pods of ").append(squadSize)
+                        .append(" learners, model and solve ").append(subStrand)
+                        .append(" mathematical problems using high-contrast chalkboard diagrams, visual drawings, and geometric representations without auditory reliance.\n\n")
+                        .append("3. Peer Signing & Formative Verification:\n")
+                        .append("   Communicate, verify, and defend mathematical solutions with desk partners in KSL using 3-color desk action cards.");
                 break;
 
             case BLIND_LOW_VISION:
                 sb.append("1. Tactile Concept Recognition:\n")
                         .append("   Identify boundaries, dimensions, and operations of ").append(subStrand)
                         .append(" by touch using pre-knotted ropes and embossed edges.\n\n")
-                        .append("2. Kinesthetic Manipulation with ").append(capitalize(localRes)).append(":\n")
-                        .append("   Count knots and feel vertex landmarks on ").append(localRes)
-                        .append(" to calculate values without needing chalkboard sight.\n\n")
+                        .append("2. Kinesthetic Manipulation:\n")
+                        .append("   Count knots and feel vertex landmarks to calculate values without needing chalkboard sight.\n\n")
                         .append("3. Oral Mathematical Defense:\n")
                         .append("   Explain the mathematical rule verbally or in braille to squad members.");
                 break;
@@ -336,14 +349,14 @@ public class InclusiveSNEPedagogyHelper {
                 sb.append("1. Symbolic & Iconic Comprehension:\n")
                         .append("   Interpret ").append(subStrand).append(" through color-coded number lines and picture storyboards, bypassing dense text paragraphs.\n\n")
                         .append("2. Concrete Representation:\n")
-                        .append("   Model the problem using ").append(localRes).append(" and record numerical values in color-coded columns.\n\n")
+                        .append("   Model the problem and record numerical values in color-coded columns.\n\n")
                         .append("3. Functional Application:\n")
                         .append("   Apply mathematical calculation accurately without penalty for spelling or letter-reversal.");
                 break;
 
             case DYSCALCULIA:
                 sb.append("1. Concrete CPA Number Experience:\n")
-                        .append("   Physically manipulate ").append(localRes).append(" to experience quantity and area before any abstract formula is shown.\n\n")
+                        .append("   Physically manipulate visual counters to experience quantity and area before any abstract formula is shown.\n\n")
                         .append("2. Ten-Frame / Dot Array Calculation:\n")
                         .append("   Use permanent desk ten-frames and dot arrays to solve ").append(subStrand).append(" without working-memory strain.\n\n")
                         .append("3. Conceptual Confidence:\n")
@@ -365,6 +378,7 @@ public class InclusiveSNEPedagogyHelper {
 
     public static String buildSNEResourcesNeeded(
             SNEProfile profile,
+            String subStrand,
             String localRes,
             String contextDesc,
             int squadCount,
@@ -375,14 +389,14 @@ public class InclusiveSNEPedagogyHelper {
 
         switch (profile) {
             case DEAF_HARD_OF_HEARING:
-                sb.append("▪ SNE Assistive & Visual Materials:\n")
-                        .append("   1. Local concrete realia: ").append(localRes).append(".\n")
-                        .append("   2. KSL Mathematical Dictionary & Wall Posters (Signs for Eneo, Pembetatu, Vizio).\n")
-                        .append("   3. 3-Color Desk Action Indicator Cards (🟢 Green: Calculating, 🟡 Yellow: Peer Check, 🔴 Red: Teacher Demo).\n")
-                        .append("   4. High-contrast chalkboard markers/chalk (Yellow, White, Green) for boxed step numbers.\n\n")
-                        .append("▪ SNE Classroom Seating & Lighting Setup:\n")
+                sb.append("▪ SNE Assistive & Visual Teaching Materials:\n")
+                        .append("   1. KSL Mathematical Dictionary & Wall Posters (Signs for ").append(getKslShortLabel(subStrand)).append(").\n")
+                        .append("   2. 3-Color Desk Action Indicator Cards (🟢 Green: Calculating, 🟡 Yellow: Peer Check, 🔴 Red: Teacher Demo).\n")
+                        .append("   3. High-contrast chalkboard markers/chalk (Yellow, White, Green) for boxed visual steps.\n")
+                        .append("   4. Geometric drawing tools, rulers, and learner mathematics exercise books.\n\n")
+                        .append("▪ SNE Classroom Seating & Sightline Setup for ").append(squadCount * squadSize).append(" Learners:\n")
                         .append("   1. Arrange desks in a semi-circular horseshoe layout facing the teacher with ample natural front-lighting to allow clear lip-reading and unobstructed sightlines for signing.\n")
-                        .append("   2. Organize ").append(squadCount).append(" visual pods of ").append(squadSize)
+                        .append("   2. Organize into ").append(squadCount).append(" visual pods of ").append(squadSize)
                         .append(" learners, pairing each deaf learner with a KSL-proficient signing buddy.\n")
                         .append("   3. Reference: KICD Grade 6 Mathematics Curriculum Design for Learners with Hearing Impairment (pp. ").append(pages).append(").");
                 break;
@@ -399,7 +413,7 @@ public class InclusiveSNEPedagogyHelper {
 
             default:
                 sb.append("▪ SNE Specialized Classroom Materials:\n")
-                        .append("   1. Concrete manipulatives: ").append(localRes).append(" in shallow desk-rim organizer trays.\n")
+                        .append("   1. Concrete manipulatives: ").append(localRes != null && !localRes.trim().isEmpty() ? localRes : "visual counters").append(" in shallow desk-rim organizer trays.\n")
                         .append("   2. Visual storyboards, color-coded calculation sheets, and Ten-Frame desk anchors.\n\n")
                         .append("▪ SNE Pod Arrangement:\n")
                         .append("   Divide into ").append(squadCount).append(" structured pods of ").append(squadSize)
@@ -429,41 +443,41 @@ public class InclusiveSNEPedagogyHelper {
             case DEAF_HARD_OF_HEARING:
                 sb.append("Step 1 — Visual Attention Signal (1 Min):\n")
                         .append("   • Flick the classroom light switch twice or raise your hand with the standard KSL attention wave.\n")
-                        .append("   • Strictly avoid verbal/auditory shouting. Ensure 100% of learners have their eyes on the teacher.\n");
+                        .append("   • Strictly avoid verbal/auditory shouting. Ensure 100% of learners have direct sightlines to the teacher.\n");
                 if (hasCustom) {
-                    sb.append("   • Teacher Hook: \"").append(customHookText.trim()).append("\"\n");
+                    sb.append("   • Teacher Note: \"").append(customHookText.trim()).append("\"\n");
                 }
-                sb.append("\nStep 2 — KSL Vocabulary & Realia Display (2 Mins):\n")
-                        .append("   • Display ").append(localRes).append(" on the demonstration table.\n")
+                sb.append("\nStep 2 — KSL Vocabulary Demonstration (2 Mins):\n")
+                        .append("   • Write the mathematical term inside a high-contrast chalkboard box.\n")
                         .append("   • Simultaneously sign and point: ").append(getKslMathGloss(subStrand)).append(". Learners mirror the signs with both hands.\n\n")
                         .append("Step 3 — Visual Key Inquiry Question (2 Mins):\n")
-                        .append("   • Point to the chalkboard visual diagram of ").append(contextDesc).append(":\n")
+                        .append("   • Display the chalkboard visual problem diagram:\n")
                         .append("     \"").append(workedExample).append("\"\n")
-                        .append("   • Sign the Key Inquiry Question: \"How do visual shapes and ").append(localRes).append(" help us measure this space accurately?\"");
+                        .append("   • Sign the Key Inquiry Question: \"How do visual diagrams and mathematical formulas help us solve this accurately?\"");
                 break;
 
             case BLIND_LOW_VISION:
                 sb.append("Step 1 — Tactile Realia Exploration (2 Mins):\n")
-                        .append("   • Hand each learner a sample piece of ").append(localRes).append(" to explore by touch.\n");
+                        .append("   • Hand each learner a tactile sample to explore by touch.\n");
                 if (hasCustom) {
                     sb.append("   • Teacher Hook: \"").append(customHookText.trim()).append("\"\n");
                 }
                 sb.append("\nStep 2 — Audio-Described Scenario Hook (2 Mins):\n")
-                        .append("   • Audio-describe the ").append(contextDesc).append(" scenario clearly: \"").append(workedExample).append("\"\n\n")
+                        .append("   • Audio-describe the ").append(subStrand).append(" scenario clearly: \"").append(workedExample).append("\"\n\n")
                         .append("Step 3 — Tactile Inquiry Question (1 Min):\n")
-                        .append("   • Ask learners to feel the edges: \"How can counting the knots on your ").append(localRes).append(" give us the exact measurement?\"");
+                        .append("   • Ask learners to feel the edges: \"How can counting the knots give us the exact measurement?\"");
                 break;
 
             default:
-                sb.append("Step 1 — Concrete Hook & Realia Connection (2 Mins):\n");
+                sb.append("Step 1 — Concrete Hook & Visual Connection (2 Mins):\n");
                 if (hasCustom) {
                     sb.append("   • Teacher Hook Focus: \"").append(customHookText.trim()).append("\"\n");
                 }
-                sb.append("   • Place ").append(localRes).append(" at the centre of desks. Introduce ").append(contextDesc).append(".\n\n")
+                sb.append("   • Introduce ").append(subStrand).append(" using concrete desk representations.\n\n")
                         .append("Step 2 — Multisensory Demonstration (2 Mins):\n")
                         .append("   • Display: \"").append(workedExample).append("\"\n\n")
                         .append("Step 3 — Key Inquiry Question (1 Min):\n")
-                        .append("   • Engage learners in observing how physical manipulation of ").append(localRes).append(" solves the challenge.");
+                        .append("   • Engage learners in observing how physical visual manipulation solves the challenge.");
                 break;
         }
 
@@ -496,13 +510,13 @@ public class InclusiveSNEPedagogyHelper {
             case DEAF_HARD_OF_HEARING:
                 // STAGE 1: Silent Visual & Concrete Modeling (KSL)
                 sb.append("STAGE 1: SILENT VISUAL & CONCRETE MODELING (KSL) (").append(step1Mins).append(" MINS)\n");
-                sb.append("▪ Focus: ").append(subStrand).append(" Visual & KSL Modeling (").append(capitalize(contextDesc)).append(")\n");
-                sb.append("▪ Teaching Method: Silent Modeling & KSL Signing | Grouping: ").append(squadCount).append(" Visual Pods of ").append(squadSize).append("\n");
-                sb.append("▪ Materials in Use: ").append(localRes).append(" + 3-Color Desk Action Cards\n\n");
+                sb.append("▪ Focus: ").append(subStrand).append(" Visual & KSL Modeling\n");
+                sb.append("▪ Teaching Method: Silent Modeling & KSL Signing | Grouping: ").append(squadCount).append(" Visual Pods of ").append(squadSize).append(" Learners\n");
+                sb.append("▪ Assistive Aids: High-Contrast Chalkboard + 3-Color Desk Action Cards\n\n");
 
-                sb.append("Step 1 — Horseshoe Layout & Silent Material Distribution (2 Mins):\n");
-                sb.append("   • Learners sit in a semi-circular horseshoe layout ensuring 100% direct, unobstructed sightlines to the teacher's signing hands and facial expressions.\n");
-                sb.append("   • Pod Material Custodians collect ").append(localRes).append(" silently from the front tray without verbal calling.\n\n");
+                sb.append("Step 1 — Horseshoe Layout & Pod Sightlines Check (2 Mins):\n");
+                sb.append("   • Verify that all ").append(squadCount).append(" visual pods in the semi-circular horseshoe layout have unobstructed sightlines to the teacher's signing hands and facial expressions.\n");
+                sb.append("   • Pod Material Custodians collect drawing rulers and exercise books silently from the front tray.\n\n");
 
                 sb.append("Step 2 — High-Contrast Board Diagram & KSL Concept Demonstration (3 Mins):\n");
                 if (customHookText != null && !customHookText.trim().isEmpty()) {
@@ -512,51 +526,49 @@ public class InclusiveSNEPedagogyHelper {
                 sb.append("   • Demonstrate and sign the mathematical concept in Kenya Sign Language (KSL): ").append(getKslMathGloss(subStrand)).append(".\n");
                 sb.append("   • Learners mirror the signs with both hands to reinforce mathematical vocabulary.\n\n");
 
-                sb.append("Step 3 — Practical Visual Modeling with ").append(capitalize(localRes)).append(" (5 Mins):\n");
+                sb.append("Step 3 — Practical Visual Modeling & Spatial Demonstration (5 Mins):\n");
                 if (slmGeneratedSteps != null && !slmGeneratedSteps.trim().isEmpty()) {
-                    sb.append("   ▪ On-Device AI Adaptive Visual Steps (Freely Adapted for ").append(capitalize(localRes)).append("):\n");
+                    sb.append("   ▪ On-Device AI Adaptive Visual Steps (Adapted for ").append(squadCount * squadSize).append(" Learners):\n");
                     sb.append(formatSteps(slmGeneratedSteps)).append("\n");
                 } else {
-                    sb.append("   ").append(concreteHowTo).append("\n");
-                    sb.append("   • Teacher demonstrates step-by-step physical grouping with ").append(localRes)
-                            .append(" at desk level without speaking, signing key actions.\n");
+                    sb.append("   • Teacher silently demonstrates step-by-step visual calculations and spatial modeling at the board, signing key mathematical transitions in KSL.\n");
+                    sb.append("   • Pod buddies mirror the visual steps on their desk drawing sheets.\n");
                 }
                 sb.append("\n");
 
                 sb.append("Step 4 — Silent Diagrammatic Recording in Exercise Books (3 Mins):\n");
                 sb.append("   • ").append(representationalTask).append("\n");
-                sb.append("   • Learners draw the visual arrangement and record numerical working without auditory distraction.\n\n");
+                sb.append("   • Learners draw the visual diagram and record numerical working without auditory distraction.\n\n");
 
                 sb.append("Step 5 — Desk-Level Visual Card Verification (2 Mins):\n");
                 sb.append("   • Teacher walks through the horseshoe pods observing 3-color desk action cards:\n");
                 sb.append("     🟢 Green = Calculating independently | 🟡 Yellow = Peer checking | 🔴 Red = Requests visual demo.\n");
-                sb.append("   • Teacher provides silent desk-level assistance using ").append(localRes).append(" to pods displaying 🔴 Red cards.\n");
+                sb.append("   • Teacher provides silent desk-level visual assistance to pods displaying 🔴 Red cards.\n");
 
                 // STAGE 2: Peer Signing & Hands-On Pod Practice
                 sb.append(divider);
                 sb.append("STAGE 2: PEER SIGNING & HANDS-ON POD PRACTICE (").append(step2Mins).append(" MINS)\n");
-                sb.append("▪ Activity Focus: ").append(subStrand).append(" — KSL Peer Practice (").append(capitalize(contextDesc)).append(")\n");
-                sb.append("▪ Teaching Method: KSL Peer Signing & Concrete Modeling | Grouping: Visual Desk Pairs\n\n");
+                sb.append("▪ Activity Focus: ").append(subStrand).append(" — KSL Peer Practice\n");
+                sb.append("▪ Teaching Method: KSL Peer Signing & Collaborative Modeling | Grouping: Visual Desk Pairs\n\n");
 
                 sb.append("Step 1 — Chalkboard Visual Follow-Up Challenge (4 Mins):\n");
                 sb.append("   • Write the follow-up problem inside a chalkboard box: ").append(guidedPracticeProblem).append("\n");
-                sb.append("   • Sign the challenge in KSL to verify clarity.\n\n");
+                sb.append("   • Sign the challenge in KSL to verify clarity across all pods.\n\n");
 
                 sb.append("Step 2 — Concrete Visual Pod Modeling (5 Mins):\n");
-                sb.append("   • Desk pairs display 🟢 Green cards and physically manipulate ").append(localRes).append(" to solve the challenge.\n\n");
+                sb.append("   • Desk pairs display 🟢 Green cards and collaboratively solve the challenge in their exercise books.\n\n");
 
                 sb.append("Step 3 — KSL Partner Verification & Peer Signing (3 Mins):\n");
                 sb.append("   • Learners switch cards to 🟡 Yellow, exchange exercise books, and sign their mathematical reasoning to each other in KSL.\n");
-                sb.append("   • Partners visually verify the physical model constructed with ").append(localRes).append(".\n\n");
+                sb.append("   • Partners visually verify each other's written calculations and diagrams.\n\n");
 
                 sb.append("Step 4 — Signed Class Demonstration (3 Mins):\n");
-                sb.append("   • Invite 2 deaf learners to the front demonstration table to physically model their solution using ")
-                        .append(localRes).append(" and sign their mathematical proof in KSL for the class.\n");
+                sb.append("   • Invite 2 deaf learners to the front demonstration area to sign their mathematical proof in KSL for the class.\n");
 
                 // STAGE 3: Visual Exit Ticket & Signed Demonstration
                 sb.append(divider);
                 sb.append("STAGE 3: VISUAL EXIT TICKET & SIGNED DEMONSTRATION (").append(exitMins).append(" MINS)\n");
-                sb.append("▪ Assessment Type: Silent Individual Visual & Signed Exit Ticket (").append(capitalize(contextDesc)).append(")\n\n");
+                sb.append("▪ Assessment Type: Silent Individual Visual & Signed Exit Ticket\n\n");
 
                 sb.append("Step 1 — Chalkboard Visual Exit Ticket (3 Mins):\n");
                 sb.append("   • ").append(exitTicketQuestion).append("\n");
@@ -565,9 +577,9 @@ public class InclusiveSNEPedagogyHelper {
                 sb.append("Step 2 — Expected Model Solution (Visual Marking Key):\n");
                 sb.append("   • ").append(exitTicketSolution).append("\n\n");
 
-                sb.append("Step 3 — Silent Visual Confirmation & Material Return (2 Mins):\n");
+                sb.append("Step 3 — Silent Visual Confirmation & Wrap-Up (2 Mins):\n");
                 sb.append("   • Learners raise their exercise books for a silent visual confirmation scan by the teacher.\n");
-                sb.append("   • Material Custodians count and return all ").append(localRes).append(" to the pod storage containers.");
+                sb.append("   • Teacher signs the KSL closing encouragement.");
                 break;
 
             case BLIND_LOW_VISION:

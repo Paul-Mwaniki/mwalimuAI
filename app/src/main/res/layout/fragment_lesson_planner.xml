@@ -61,8 +61,9 @@
                     app:iconSize="14dp" />
             </LinearLayout>
 
-            <!-- Free-Form AI Prompt Card (Type in Your Own Words) -->
+            <!-- Selected SNE Category Banner (Selected from Home Screen) -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardActiveSNEBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -70,62 +71,48 @@
                 app:cardCornerRadius="14dp"
                 app:cardElevation="1dp"
                 app:strokeColor="@color/primary"
-                app:strokeWidth="1.2dp">
+                app:strokeWidth="1.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✨ Free-Form AI Prompt (Or Use Form Below)"
-                        android:textColor="@color/primary"
-                        android:textSize="14.5sp"
-                        android:textStyle="bold" />
+                        android:id="@+id/tvActiveSNEIcon"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:text="👂"
+                        android:textSize="24sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Describe your topic, class size, and custom materials in plain English:"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilFreeFormPrompt"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:hint="e.g. Area of a triangle for 48 learners using strings and boxes">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etFreeFormPrompt"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/tvActiveSNETitle"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:imeOptions="actionSend"
-                            android:inputType="textCapSentences"
-                            android:maxLines="2"
-                            android:singleLine="true"
-                            android:textColor="@color/text_primary"
-                            android:textSize="13.5sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:text="Hearing Impairment / Deaf (KSL)"
+                            android:textColor="@color/primary"
+                            android:textSize="15.5sp"
+                            android:textStyle="bold" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnGenerateFreeForm"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:text="Generate Lesson from Prompt"
-                        android:textSize="13.5sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="8dp"
-                        app:icon="@drawable/ic_smart_toy"
-                        app:iconGravity="textStart" />
+                        <TextView
+                            android:id="@+id/tvActiveSNESubtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="KICD Grade 6 SNE: KSL Signs, Visual Pods &amp; 3-Color Desk Cards"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -205,94 +192,19 @@
                                 android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:inputType="number"
-                                android:text="45" />
+                                android:text="48" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
-                    <!-- Available Resources Dropdown -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilResources"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="14dp"
-                        android:hint="Available Local Resources">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/actvResources"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:inputType="none" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Custom Resource Input (Revealed when "Custom / Add Own Materials..." is selected) -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilCustomResources"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="14dp"
-                        android:hint="Specify Your Local Materials"
-                        app:helperText="e.g. Avocado seeds, dry sticks, bean counters, bottle caps"
-                        app:helperTextTextColor="@color/text_secondary"
-                        android:visibility="gone">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etCustomResources"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapSentences"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Learning Need Dropdown -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilLearningNeed"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="14dp"
-                        android:hint="Targeted SNE Category / Special Need">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/actvLearningNeed"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:inputType="none" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Teaching Strategy / Activity Focus Dropdown -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilStrategy"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="14dp"
-                        android:hint="Teaching Strategy / Activity Focus">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/actvStrategy"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:inputType="none" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Custom Activity Idea / Lesson Hook Input -->
+                    <!-- Custom Activity Idea / Lesson Hook Input (Optional) -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilCustomHook"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:hint="Custom Lesson Hook or Activity Idea (Optional)"
-                        app:helperText="e.g. Learners count avocado seeds into 3 farmer baskets"
+                        android:hint="Custom Lesson Hook or Note (Optional)"
+                        app:helperText="e.g. Focus on finding area of triangular garden beds"
                         app:helperTextTextColor="@color/text_secondary">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -304,23 +216,6 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Switches: Electricity & Internet -->
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchElectricity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Electricity Available in Classroom"
-                        android:textColor="@color/text_primary" />
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchInternet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:text="Internet Access Available"
-                        android:textColor="@color/text_primary" />
 
                     <!-- Action Button -->
                     <com.google.android.material.button.MaterialButton

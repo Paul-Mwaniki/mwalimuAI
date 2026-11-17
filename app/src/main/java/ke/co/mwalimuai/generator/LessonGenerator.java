@@ -326,7 +326,7 @@ public class LessonGenerator {
 
         // 3. Learning Resources & Teacher Preparation (100% SNE-aligned)
         lesson.setResourcesNeeded(InclusiveSNEPedagogyHelper.buildSNEResourcesNeeded(
-                profile, localRes, contextDesc, squadCount, squadSize, sourcePages));
+                profile, subStrand, localRes, contextDesc, squadCount, squadSize, sourcePages));
 
         // 4. Lesson Introduction / Hook (100% SNE-aligned, 0% auditory for HI)
         lesson.setIntroduction(InclusiveSNEPedagogyHelper.buildSNEIntroduction(

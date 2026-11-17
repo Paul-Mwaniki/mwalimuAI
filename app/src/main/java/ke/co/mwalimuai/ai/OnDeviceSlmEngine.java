@@ -406,34 +406,36 @@ public class OnDeviceSlmEngine {
         if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING) {
             prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics for Learners with Hearing Impairment (Deaf / KSL). ");
             prompt.append("All instruction is 100% visual and uses Kenya Sign Language (KSL). No spoken or auditory activities exist. ");
-            prompt.append("Freely adapt the lesson: show how deaf learners visually and physically manipulate the teacher's exact materials (")
-                    .append(params.availableResources).append(") using KSL signs, desk action cards, and visual realia to model and solve the math problem. Be creative, practical, and direct. Do not use fixed templates.<|im_end|>\n");
+            prompt.append("Freely adapt the lesson: show how deaf learners in a class of ").append(params.classSize)
+                    .append(" visually model and solve the math problem using KSL signs, desk action cards, and chalkboard diagrams. Be creative, practical, and direct. Do not use fixed templates.<|im_end|>\n");
         } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.BLIND_LOW_VISION) {
             prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics for Learners with Visual Impairment (Blind / Low Vision). ");
-            prompt.append("All instruction is tactile, kinesthetic, and audio-described. Freely adapt the lesson: show how blind learners touch, count, and physically manipulate the teacher's exact materials (")
-                    .append(params.availableResources).append(") using knots, raised edges, and tactile landmarks to solve the math problem. Do not use fixed templates.<|im_end|>\n");
+            prompt.append("All instruction is tactile, kinesthetic, and audio-described. Freely adapt the lesson: show how blind learners touch, count, and physically manipulate objects using knots, raised edges, and tactile landmarks to solve the math problem. Do not use fixed templates.<|im_end|>\n");
         } else {
             prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics adapting for ")
                     .append(InclusiveSNEPedagogyHelper.getProfileTargetName(profile)).append(". ");
-            prompt.append("Freely adapt the lesson: show how learners physically manipulate the teacher's exact materials (")
-                    .append(params.availableResources).append(") using concrete, differentiated, and inclusive steps to solve the math problem. Do not use fixed templates.<|im_end|>\n");
+            prompt.append("Freely adapt the lesson: show how learners physically model and solve the math problem using concrete, differentiated, and inclusive steps. Do not use fixed templates.<|im_end|>\n");
         }
 
         prompt.append("<|im_start|>user\n");
         prompt.append("SNE Target: ").append(InclusiveSNEPedagogyHelper.getProfileTitle(profile)).append("\n");
         prompt.append("Grade 6 SNE Mathematics Topic: ").append(strand).append(" — ").append(subStrand).append(" (KICD SNE Curriculum pp. ").append(pages).append(")\n");
+        prompt.append("Class Size: ").append(params.classSize).append(" learners (organized in horseshoe pods)\n");
         if (breakdown != null && !breakdown.learningOutcomes.isEmpty()) {
             prompt.append("Curriculum Focus: ").append(breakdown.learningOutcomes.get(0)).append("\n");
         }
-        prompt.append("Materials Available: ").append(params.availableResources).append("\n");
-        prompt.append("Practical Context: ").append(scenarioTitle).append("\n");
         prompt.append("Math Problem: ").append(synthesizedMathExample).append("\n");
         if (params.customActivityOrHook != null && !params.customActivityOrHook.trim().isEmpty()) {
             prompt.append("Teacher Notes: ").append(params.customActivityOrHook.trim()).append("\n");
         }
-        prompt.append("\nFreely generate 3 practical, step-by-step classroom actions (1., 2., 3.) showing how learners in pods physically use ")
-                .append(params.availableResources)
-                .append(" to model and solve the problem, fully adapted for this SNE profile:<|im_end|>\n<|im_start|>assistant\n");
+
+        if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING) {
+            prompt.append("\nFreely generate 3 practical, step-by-step visual classroom actions (1., 2., 3.) showing how deaf learners in a class of ")
+                    .append(params.classSize)
+                    .append(" use KSL signing, visual diagrams, and desk action cards to solve this problem:<|im_end|>\n<|im_start|>assistant\n");
+        } else {
+            prompt.append("\nFreely generate 3 practical, step-by-step classroom actions (1., 2., 3.) showing how learners in pods solve the problem, fully adapted for this SNE profile:<|im_end|>\n<|im_start|>assistant\n");
+        }
 
         return prompt.toString();
     }
