@@ -13,7 +13,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import ke.co.mwalimuai.R;
-import ke.co.mwalimuai.ai.TinyMLInferenceManager;
+import ke.co.mwalimuai.ai.OnDeviceSlmEngine;
 import ke.co.mwalimuai.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -31,13 +31,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Display Active TinyML Model info
-        TinyMLInferenceManager manager = TinyMLInferenceManager.getInstance(requireContext());
-        if (manager.isModelReady()) {
-            binding.tvModelBadge.setText("⚡ Offline CBE Engine Ready");
-        } else {
-            binding.tvModelBadge.setText("⚡ Offline Mode Active");
-        }
+        updateModelStatusBadge();
+
+        binding.layoutModelStatusBadge.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                OnDeviceSlmEngine.getInstance(requireContext()).promptModelDownloadIfNeeded(requireActivity(), true);
+                updateModelStatusBadge();
+            }
+        });
 
         // Option 1: Lesson Plan
         binding.cardQuickPlan.setOnClickListener(v -> {
@@ -49,7 +50,17 @@ public class HomeFragment extends Fragment {
             navController.navigate(R.id.navigation_planner, null, navOptions);
         });
 
-        // Option 2: Access Curriculum Offline
+        // Option 2: Free-Form AI Prompt
+        binding.cardQuickAiPrompt.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setLaunchSingleTop(true)
+                    .setPopUpTo(R.id.navigation_home, false)
+                    .build();
+            navController.navigate(R.id.navigation_chat, null, navOptions);
+        });
+
+        // Option 3: Access Curriculum Offline
         binding.cardQuickCurriculum.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(v);
             NavOptions navOptions = new NavOptions.Builder()
@@ -58,6 +69,21 @@ public class HomeFragment extends Fragment {
                     .build();
             navController.navigate(R.id.navigation_curriculum, null, navOptions);
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateModelStatusBadge();
+    }
+
+    private void updateModelStatusBadge() {
+        if (binding == null || getContext() == null) return;
+        if (OnDeviceSlmEngine.isModelDownloaded(requireContext())) {
+            binding.tvModelBadge.setText("⚡ Qwen2.5-0.5B Offline AI Active");
+        } else {
+            binding.tvModelBadge.setText("⬇ Tap to Download Qwen2.5-0.5B AI (" + OnDeviceSlmEngine.QWEN_MODEL_SIZE_DISPLAY + ")");
+        }
     }
 
     @Override

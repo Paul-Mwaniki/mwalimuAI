@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Welcome Banner (Title: CBE, removed CBC from top) -->
+        <!-- Welcome Banner (Title: CBE) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CBE Teacher Assistant"
+                    android:text="Mwalimu SNE AI"
                     android:textColor="@color/secondary_light"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -40,26 +40,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Grade 6 Mathematics • Competency-Based Education"
+                    android:text="Inclusive Grade 6 Math • CBC Special Needs Education"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
-                <!-- Offline AI Chip -->
+                <!-- Offline AI Model Status / Download Chip -->
                 <LinearLayout
+                    android:id="@+id/layoutModelStatusBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:background="@color/primary_dark"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp">
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp">
 
                     <TextView
                         android:id="@+id/tvModelBadge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="⚡ Offline Mode Ready"
+                        android:text="⚡ Checking Offline AI Model..."
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -131,7 +134,71 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Option 2: Access Curriculum Offline -->
+        <!-- Option 2: Free-Form AI Prompt -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardQuickAiPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1.2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="18dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_smart_toy"
+                    android:backgroundTint="@color/primary_container"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_smart_toy"
+                    app:tint="@color/primary" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Free-Form AI Prompt"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Type any custom lesson request or material idea in your own words (Qwen2.5-0.5B)"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12.5sp" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:text="Prompt"
+                    android:textSize="13sp"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Option 3: Access Curriculum Offline -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardQuickCurriculum"
             android:layout_width="match_parent"

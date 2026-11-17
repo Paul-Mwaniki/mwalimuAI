@@ -50,11 +50,14 @@ public class LessonPlannerFragment extends Fragment {
     };
 
     private final String[] learningNeedOptions = {
-            "mixed ability",
-            "large class",
-            "needs scaffolding",
-            "limited materials",
-            "extension"
+            "Universal Inclusive (Mixed Abilities & SNE Scaffolding)",
+            "Visual Impairment / Blind (Tactile Knotted Ropes & Audio Guide)",
+            "Hearing Impairment / Deaf (KSL Sign Glosses & Visual Desk Cards)",
+            "Dyslexia & Reading Difficulties (Symbolic Storyboards & Color Cues)",
+            "Dyscalculia (Concrete CPA, Dot Math & Ten-Frames)",
+            "ADHD & Attention Focus (3-Min Micro-Intervals & Kinesthetic Roles)",
+            "Motor / Physical Challenges (Adapted Grips & Peer Scribing)",
+            "Large Inclusive Class (45+ Learners with SNE Squad Roles)"
     };
 
     private final String[] strategyOptions = {
@@ -118,8 +121,31 @@ public class LessonPlannerFragment extends Fragment {
         loadCurriculumEntities();
 
         binding.btnGeneratePlan.setOnClickListener(v -> generatePlan());
+        binding.btnGenerateFreeForm.setOnClickListener(v -> generateFromFreeFormPrompt());
         binding.btnViewSavedLessons.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_planner_to_saved));
+
+        // Allow pressing Enter / Send on the keyboard inside the Free-Form Prompt box
+        binding.etFreeFormPrompt.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEND
+                    || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE
+                    || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO
+                    || (event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER
+                    && event.getAction() == android.view.KeyEvent.ACTION_DOWN)) {
+                generateFromFreeFormPrompt();
+                return true;
+            }
+            return false;
+        });
+
+        binding.etFreeFormPrompt.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == android.view.KeyEvent.KEYCODE_ENTER
+                    && event.getAction() == android.view.KeyEvent.ACTION_DOWN) {
+                generateFromFreeFormPrompt();
+                return true;
+            }
+            return false;
+        });
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
                 new androidx.activity.OnBackPressedCallback(true) {
@@ -269,7 +295,59 @@ public class LessonPlannerFragment extends Fragment {
         });
     }
 
+    private void hideKeyboard() {
+        try {
+            if (getActivity() != null && binding != null) {
+                android.view.inputmethod.InputMethodManager imm =
+                        (android.view.inputmethod.InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null && getView() != null) {
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void generateFromFreeFormPrompt() {
+        String freePrompt = binding.etFreeFormPrompt.getText() != null
+                ? binding.etFreeFormPrompt.getText().toString().trim() : "";
+        if (freePrompt.isEmpty()) {
+            binding.tilFreeFormPrompt.setError("Please enter your lesson request or materials (e.g. Area of a triangle using strings and boxes)");
+            binding.etFreeFormPrompt.requestFocus();
+            return;
+        }
+        binding.tilFreeFormPrompt.setError(null);
+        hideKeyboard();
+
+        CurriculumEntity selectedDropdownCurr = null;
+        String subStrandText = binding.actvSubStrand.getText() != null
+                ? binding.actvSubStrand.getText().toString() : "";
+        for (CurriculumEntity c : curriculumList) {
+            if (subStrandText.contains(c.getSubStrand())) {
+                selectedDropdownCurr = c;
+                break;
+            }
+        }
+        // Only override with dropdown if user explicitly changed dropdown away from 1.1 Whole numbers
+        CurriculumEntity fallbackCurr = (selectedDropdownCurr != null && !"1.1".equals(selectedDropdownCurr.getSubStrandCode()))
+                ? selectedDropdownCurr : null;
+
+        LessonGenerator.LessonPlanningParameters params =
+                LessonGenerator.parseFreeFormPrompt(freePrompt, curriculumList, fallbackCurr);
+
+        isGeneratingInitiated = true;
+        viewModel.generateLessonPlan(params);
+    }
+
     private void generatePlan() {
+        hideKeyboard();
+        // If the teacher typed a free-form prompt at the top and tapped the bottom Generate button, honor their free-form prompt!
+        String topFreePrompt = binding.etFreeFormPrompt.getText() != null
+                ? binding.etFreeFormPrompt.getText().toString().trim() : "";
+        if (!topFreePrompt.isEmpty()) {
+            generateFromFreeFormPrompt();
+            return;
+        }
+
         String subStrandText = binding.actvSubStrand.getText().toString();
         if (subStrandText.isEmpty() || curriculumList.isEmpty()) {
             Toast.makeText(requireContext(), "Please select a curriculum topic", Toast.LENGTH_SHORT).show();
