@@ -136,9 +136,9 @@ public class OfflineChatFragment extends Fragment {
     private void updateHeaderStatus() {
         if (binding == null || getContext() == null) return;
         if (OnDeviceSlmEngine.isModelDownloaded(requireContext())) {
-            binding.tvChatTopTitle.setText("Free-Form AI Prompt (Qwen2.5-0.5B Active)");
+            binding.tvChatTopTitle.setText("Mwalimu SNE AI Prompt (Offline Active)");
         } else {
-            binding.tvChatTopTitle.setText("Free-Form AI Prompt (Tap to Download Qwen2.5-0.5B)");
+            binding.tvChatTopTitle.setText("Mwalimu SNE AI Prompt (Tap to Download Offline AI)");
             binding.tvChatTopTitle.setOnClickListener(v -> {
                 if (getActivity() != null) {
                     OnDeviceSlmEngine.getInstance(requireContext()).promptModelDownloadIfNeeded(requireActivity(), true);
@@ -159,8 +159,8 @@ public class OfflineChatFragment extends Fragment {
 
         final boolean slmPresent = OnDeviceSlmEngine.isModelDownloaded(requireContext());
         final String thinkingText = slmPresent
-                ? "🤖 Prompting on-device Qwen2.5-0.5B SLM with your materials & KICD Grade 6 curriculum..."
-                : "⏳ Generating your material-connected KICD Grade 6 lesson plan...";
+                ? "🤖 Mwalimu SNE AI is generating your targeted lesson with your materials..."
+                : "⏳ Generating your material-connected KICD Grade 6 SNE lesson plan...";
         addMessage(new OfflineLanguageModelEngine.ChatMessage(false, thinkingText));
         final int thinkingMsgIndex = messageList.size() - 1;
 
@@ -170,7 +170,7 @@ public class OfflineChatFragment extends Fragment {
             CurriculumDao dao = MwalimuDatabase.getInstance(appCtx).curriculumDao();
             List<CurriculumEntity> allCurricula = dao.getAllCurriculum();
 
-            // Parse free-form prompt into LessonPlanningParameters & generate complete coherent LessonEntity (prompts Qwen2.5-0.5B SLM)
+            // Parse free-form prompt into LessonPlanningParameters & generate complete coherent SNE LessonEntity
             LessonGenerator.LessonPlanningParameters params =
                     LessonGenerator.parseFreeFormPrompt(userQuery, allCurricula);
             LessonEntity generatedLesson =
@@ -179,11 +179,9 @@ public class OfflineChatFragment extends Fragment {
 
             StringBuilder reply = new StringBuilder();
             reply.append("📋 ").append(generatedLesson.getLessonTitle()).append("\n");
+            reply.append("▪ SNE Target Focus: ").append(params.learningNeed).append("\n");
             reply.append("▪ Materials in Use: ").append(params.availableResources).append("\n");
             reply.append("▪ Class Size: ").append(params.classSize).append(" Learners | Duration: ").append(params.durationMinutes).append(" Mins\n");
-            if (slmPresent) {
-                reply.append("▪ AI Engine: Qwen2.5-0.5B-Instruct (On-Device SLM + KICD RAG)\n");
-            }
             reply.append("────────────────────────────────────────\n\n");
             reply.append(generatedLesson.getIntroduction()).append("\n\n");
             reply.append("────────────────────────────────────────\n\n");

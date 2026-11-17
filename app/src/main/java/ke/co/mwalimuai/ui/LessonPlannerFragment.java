@@ -206,11 +206,16 @@ public class LessonPlannerFragment extends Fragment {
     private void setupDropdowns() {
         bindDropdownAdapters();
 
+        Bundle args = getArguments();
+        String incomingSNE = args != null ? args.getString("selectedSNE") : null;
+        if (incomingSNE != null && !incomingSNE.isEmpty()) {
+            binding.actvLearningNeed.setText(incomingSNE, false);
+        } else if (binding.actvLearningNeed.getText().toString().isEmpty()) {
+            binding.actvLearningNeed.setText(learningNeedOptions[0], false);
+        }
+
         if (binding.actvResources.getText().toString().isEmpty()) {
             binding.actvResources.setText(resourceOptions[0], false);
-        }
-        if (binding.actvLearningNeed.getText().toString().isEmpty()) {
-            binding.actvLearningNeed.setText(learningNeedOptions[0], false);
         }
         if (binding.actvStrategy.getText().toString().isEmpty()) {
             binding.actvStrategy.setText(strategyOptions[0], false);

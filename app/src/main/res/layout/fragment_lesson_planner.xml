@@ -32,7 +32,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CBE Lesson Plan"
+                        android:text="Mwalimu SNE Lesson Plan"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Configure classroom parameters to generate a 40-min CBE lesson plan"
+                        android:text="Targeted CBC Special Needs Education (SNE) Lesson Planning"
                         android:textColor="@color/text_secondary"
                         android:textSize="12.5sp" />
                 </LinearLayout>
@@ -255,7 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
-                        android:hint="Learner Focus / Differentiation Need">
+                        android:hint="Targeted SNE Category / Special Need">
 
                         <AutoCompleteTextView
                             android:id="@+id/actvLearningNeed"

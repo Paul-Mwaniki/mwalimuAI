@@ -213,11 +213,11 @@ public class OnDeviceSlmEngine {
                 : "You are currently connected via Mobile Data (carrier data charges may apply).";
 
         new AlertDialog.Builder(activity)
-                .setTitle("Download Offline AI Model (Qwen2.5-0.5B)")
+                .setTitle("Download Offline SNE AI Model")
                 .setMessage(dataNotice + "\n\n" +
-                        "• Model: Qwen2.5-0.5B-Instruct (Quantized On-Device SLM)\n" +
+                        "• Model: On-Device SNE AI Model\n" +
                         "• Download Size: " + QWEN_MODEL_SIZE_DISPLAY + " (One-time download)\n\n" +
-                        "Once downloaded, the full Qwen2.5-0.5B AI model runs 100% offline on your phone for free-form prompts and adaptive lesson generation.\n\n" +
+                        "Once downloaded, the full SNE AI model runs 100% offline on your phone for free-form prompts and adaptive lesson generation.\n\n" +
                         "Would you like to download the " + QWEN_MODEL_SIZE_DISPLAY + " model now using " + connType + "?")
                 .setCancelable(true)
                 .setPositiveButton("Yes, Download (" + QWEN_MODEL_SIZE_DISPLAY + ")", (dialog, which) -> {
@@ -244,14 +244,14 @@ public class OnDeviceSlmEngine {
         progressBar.setProgress(0);
 
         TextView statusText = new TextView(activity);
-        statusText.setText("Connecting to download Qwen2.5-0.5B (0 MB / " + QWEN_MODEL_SIZE_DISPLAY + ")...");
+        statusText.setText("Connecting to download Offline SNE AI (0 MB / " + QWEN_MODEL_SIZE_DISPLAY + ")...");
         statusText.setPadding(0, pad / 2, 0, 0);
 
         layout.addView(progressBar);
         layout.addView(statusText);
 
         AlertDialog progressDialog = new AlertDialog.Builder(activity)
-                .setTitle("Downloading Qwen2.5-0.5B AI Model")
+                .setTitle("Downloading Offline SNE AI Model")
                 .setView(layout)
                 .setCancelable(false)
                 .setNegativeButton("Cancel", (d, w) -> {
@@ -352,7 +352,7 @@ public class OnDeviceSlmEngine {
                         progressDialog.dismiss();
                     }
                     Toast.makeText(appCtx,
-                            "Qwen2.5-0.5B Offline AI Model downloaded and activated!",
+                            "Offline SNE AI Model downloaded and activated!",
                             Toast.LENGTH_LONG).show();
                 });
 

@@ -26,10 +26,10 @@
     <string name="prompt_duration">Lesson Duration (mins)</string>
     <string name="prompt_class_size">Class Size (Learners)</string>
     <string name="prompt_resources">Available Resources</string>
-    <string name="prompt_learning_need">Learner Focus / Need</string>
+    <string name="prompt_learning_need">Targeted SNE Category</string>
     <string name="prompt_electricity">Electricity Available?</string>
     <string name="prompt_internet">Internet Available?</string>
-    <string name="btn_generate_lesson">Generate CBE Lesson Plan</string>
+    <string name="btn_generate_lesson">Generate Targeted SNE Lesson Plan</string>
     <string name="btn_export_word">Export to Word (.docx)</string>
     <string name="btn_export_pdf">Export to PDF</string>
     <string name="btn_save_lesson">Save Lesson Plan</string>

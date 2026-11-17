@@ -415,7 +415,7 @@ public class LessonGenerator {
         devBuilder.append("Step 3 — How to Use ").append(capitalize(localRes)).append(" Step-by-Step (5 Mins):\n");
         devBuilder.append("   ").append(activeConcreteHowTo).append("\n");
         if (slmGeneratedSteps != null && !slmGeneratedSteps.trim().isEmpty()) {
-            devBuilder.append("\n   🤖 Qwen2.5-0.5B SLM Classroom Facilitation (").append(capitalize(localRes)).append("):\n");
+            devBuilder.append("\n   ▪ SNE Classroom Facilitation & Guided Modeling (").append(capitalize(localRes)).append("):\n");
             devBuilder.append(formatNumberedStepsNewLines(slmGeneratedSteps)).append("\n");
         }
         devBuilder.append("\n");
