@@ -312,162 +312,61 @@ public class LessonGenerator {
         int step1Mins = devTotalMins / 2;
         int step2Mins = devTotalMins - step1Mins;
 
-        // Lesson Title (includes official KICD Kiswahili gloss)
-        String kiswahiliGloss = InclusiveSNEPedagogyHelper.getKiswahiliMathGloss(subStrand);
-        lesson.setLessonTitle(subStrand + " (" + sourcePages + ") — " + capitalize(contextDesc) + " [" + kiswahiliGloss + "]");
+        // Detect SNE Profile (e.g. Hearing Impairment / KSL, Visual Impairment, etc.)
+        InclusiveSNEPedagogyHelper.SNEProfile profile =
+                InclusiveSNEPedagogyHelper.detectProfile(params.learningNeed);
 
-        // 1. Specific Learning Outcomes & Curriculum RAG Context
-        CurriculumBreakdownHelper.SubStrandBreakdown ragBreakdown = CurriculumBreakdownHelper.getBreakdown(curr);
-        String focus = curr != null && curr.getCurriculumAlignedFocus() != null
-                ? curr.getCurriculumAlignedFocus() : "mathematical reasoning and problem solving";
-        String kicdOutcome1 = (ragBreakdown != null && !ragBreakdown.learningOutcomes.isEmpty())
-                ? ragBreakdown.learningOutcomes.get(currentScenarioIdx % ragBreakdown.learningOutcomes.size())
-                : ("Explain and demonstrate " + subStrand + " concepts (" + focus + ") using " + localRes + ".");
-        String kicdInquiryQ = (ragBreakdown != null && !ragBreakdown.keyInquiryQuestions.isEmpty())
-                ? ragBreakdown.keyInquiryQuestions.get(currentScenarioIdx % ragBreakdown.keyInquiryQuestions.size())
-                : ("How does using " + localRes + " help us solve today's " + subStrand + " challenge?");
-        String kicdCompetencies = (ragBreakdown != null && ragBreakdown.coreCompetencies != null)
-                ? ragBreakdown.coreCompetencies
-                : "Critical thinking & problem solving; Communication & collaboration";
+        // 1. Lesson Title (100% SNE-focused and simple)
+        lesson.setLessonTitle(InclusiveSNEPedagogyHelper.buildSNELessonTitle(
+                profile, subStrand, sourcePages, capitalize(contextDesc)));
 
-        lesson.setLearningObjective(
-                "By the end of the " + params.durationMinutes + "-minute lesson, the learner should be able to:\n\n" +
-                "1. Knowledge & Concept (" + subStrand + " — KICD Outcome):\n" +
-                "   " + kicdOutcome1 + "\n\n" +
-                "2. Practical Application with " + capitalize(localRes) + ":\n" +
-                "   Use " + localRes + " in squads of " + squadSize + " to model and solve problems in the " + contextDesc + " scenario.\n\n" +
-                "3. Core Competencies & Values:\n" +
-                "   Demonstrate " + kicdCompetencies + " while sharing " + localRes + " responsibly."
+        // 2. Specific Learning Outcomes (100% SNE-aligned)
+        lesson.setLearningObjective(InclusiveSNEPedagogyHelper.buildSNELearningOutcomes(
+                profile, subStrand, localRes, contextDesc, params.durationMinutes, squadSize));
+
+        // 3. Learning Resources & Teacher Preparation (100% SNE-aligned)
+        lesson.setResourcesNeeded(InclusiveSNEPedagogyHelper.buildSNEResourcesNeeded(
+                profile, localRes, contextDesc, squadCount, squadSize, sourcePages));
+
+        // 4. Lesson Introduction / Hook (100% SNE-aligned, 0% auditory for HI)
+        lesson.setIntroduction(InclusiveSNEPedagogyHelper.buildSNEIntroduction(
+                profile, subStrand, localRes, contextDesc, synth.workedExample, introMins, customHookText));
+
+        // 5. Lesson Development (Stages 1, 2, 3 fully SNE-native)
+        String sneDevelopment = InclusiveSNEPedagogyHelper.buildSNELessonDevelopment(
+                profile,
+                subStrand,
+                localRes,
+                contextDesc,
+                synth.workedExample,
+                activeConcreteHowTo,
+                synth.representationalTask,
+                synth.guidedPracticeProblem,
+                synth.exitTicketQuestion,
+                synth.exitTicketSolution,
+                slmGeneratedSteps,
+                squadCount,
+                squadSize,
+                step1Mins,
+                step2Mins,
+                exitMins,
+                customHookText
         );
+        lesson.setLessonDevelopment(sneDevelopment);
 
-        // 2. Learning Resources & Material Preparation
-        lesson.setResourcesNeeded(
-                "▪ Classroom Materials:\n" +
-                "   " + localRes + ", ruler/chalkboard, and learner exercise books.\n\n" +
-                "▪ Teacher Preparation Before Lesson:\n" +
-                "   1. Divide " + localRes + " into " + squadCount + " equal sets (1 set per squad of " + squadSize + " learners).\n" +
-                "   2. Write the " + contextDesc + " worked problem clearly on the chalkboard.\n" +
-                "   3. Curriculum Reference: KICD Grade 6 Mathematics (" + sourcePages + ")."
-        );
-
-        // 3. Lesson Introduction / Hook
-        if (hasCustomHook) {
-            lesson.setIntroduction(
-                    "⏱ Time Allocation: " + introMins + " Minutes\n" +
-                    "────────────────────────────────────────\n" +
-                    "Step 1 — Teacher Prompt & Scenario Hook (2 Mins):\n" +
-                    "   • Teacher Focus: " + customHookText + "\n" +
-                    "   • Coherent Scenario (" + contextDesc + "): " + synth.workedExample + "\n\n" +
-                    "Step 2 — Concrete Material Demonstration (2 Mins):\n" +
-                    "   • Display " + localRes + " at the front demonstration table.\n" +
-                    "   • Invite 2 learners to physically demonstrate how " + localRes + " models the problem above.\n\n" +
-                    "Step 3 — KICD Key Inquiry Question (1 Min):\n" +
-                    "   • Ask the class: \"" + kicdInquiryQ + "\""
-            );
+        // Main Activities Summary
+        String activitiesSummary;
+        if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING) {
+            activitiesSummary = "Silent Visual & KSL Concrete Modeling; KSL Peer Signing & Hands-On Pod Practice; Visual Exit Ticket & Signed Demonstration";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.BLIND_LOW_VISION) {
+            activitiesSummary = "Tactile Modeling & Kinesthetic Exploration; Tactile Pair Practice & Oral Verification; Tactile Exit Ticket";
         } else {
-            lesson.setIntroduction(
-                    "⏱ Time Allocation: " + introMins + " Minutes\n" +
-                    "────────────────────────────────────────\n" +
-                    "Step 1 — Real-Life Scenario Hook (2 Mins):\n" +
-                    "   • Introduce today's scenario: " + contextDesc + ".\n" +
-                    "   • Chalkboard Problem: " + synth.workedExample + "\n\n" +
-                    "Step 2 — Concrete Demonstration with " + capitalize(localRes) + " (2 Mins):\n" +
-                    "   • Place " + localRes + " on the front demonstration table.\n" +
-                    "   • Call 2 learners forward to physically set up " + localRes + " while the class observes.\n\n" +
-                    "Step 3 — KICD Key Inquiry Question (1 Min):\n" +
-                    "   • Ask desk partners to discuss for 30 seconds: \"" + kicdInquiryQ + "\""
-            );
+            activitiesSummary = "Adapted Concrete Modeling; Guided Pod Practice; Multi-Pathway Exit Ticket";
         }
-
-        // 4. Lesson Development
-        StringBuilder devBuilder = new StringBuilder();
-        StringBuilder activitiesSummary = new StringBuilder();
-
-        ActivityEntity primaryAct = null;
-        ActivityEntity secondaryAct = null;
-        if (rankedActivities != null && !rankedActivities.isEmpty()) {
-            int pIdx = currentScenarioIdx % rankedActivities.size();
-            int sIdx = (currentScenarioIdx + 1) % rankedActivities.size();
-            primaryAct = rankedActivities.get(pIdx);
-            secondaryAct = rankedActivities.get(sIdx);
-        }
-
-        String strat1 = primaryAct != null ? primaryAct.getStrategy() : "Manipulative exploration";
-        String title1 = hasCustomHook ? (subStrand + ": " + customHookText)
-                : (subStrand + " — Hands-On Exploration (" + capitalize(contextDesc) + ")");
-
-        devBuilder.append("STAGE 1: CONCRETE HANDS-ON EXPLORATION (").append(step1Mins).append(" MINS)\n");
-        devBuilder.append("▪ Scenario & Focus: ").append(title1).append("\n");
-        devBuilder.append("▪ Teaching Method: ").append(strat1).append(" | Grouping: ").append(squadCount).append(" Squads of ").append(squadSize).append("\n");
-        devBuilder.append("▪ Materials in Use: ").append(localRes).append("\n\n");
-
-        devBuilder.append("Step 1 — Squad & Material Distribution (2 Mins):\n");
-        devBuilder.append("   • Divide the ").append(params.classSize).append(" learners into ").append(squadCount)
-                .append(" squads of ").append(squadSize).append(".\n");
-        devBuilder.append("   • Each squad's Material Custodian collects their set of ").append(localRes).append(".\n\n");
-
-        devBuilder.append("Step 2 — Teacher Worked Example on Board (3 Mins):\n");
         if (hasCustomHook) {
-            devBuilder.append("   • Custom Focus: \"").append(customHookText).append("\"\n");
+            activitiesSummary = customHookText + " — " + activitiesSummary;
         }
-        devBuilder.append("   • Scenario Problem: ").append(synth.workedExample).append("\n\n");
-
-        devBuilder.append("Step 3 — How to Use ").append(capitalize(localRes)).append(" Step-by-Step (5 Mins):\n");
-        devBuilder.append("   ").append(activeConcreteHowTo).append("\n");
-        if (slmGeneratedSteps != null && !slmGeneratedSteps.trim().isEmpty()) {
-            devBuilder.append("\n   ▪ SNE Classroom Facilitation & Guided Modeling (").append(capitalize(localRes)).append("):\n");
-            devBuilder.append(formatNumberedStepsNewLines(slmGeneratedSteps)).append("\n");
-        }
-        devBuilder.append("\n");
-
-        devBuilder.append("Step 4 — Representational Recording in Exercise Books (3 Mins):\n");
-        devBuilder.append("   • ").append(synth.representationalTask).append("\n\n");
-
-        devBuilder.append("Step 5 — Teacher Observation Check (2 Mins):\n");
-        devBuilder.append("   • Walk around desks inspecting each squad's physical setup of ").append(localRes)
-                .append(" and ask: \"How does your manipulation of ").append(localRes).append(" prove your written calculation?\"");
-
-        devBuilder.append(STAGE_DIVIDER);
-        activitiesSummary.append(title1);
-
-        // Stage 2: Guided Practice & Peer Application
-        String strat2 = secondaryAct != null ? secondaryAct.getStrategy() : "Think-pair-share";
-        String title2 = subStrand + " — Guided Practice (" + capitalize(contextDesc) + ")";
-
-        devBuilder.append("STAGE 2: GUIDED PRACTICE & PEER APPLICATION (").append(step2Mins).append(" MINS)\n");
-        devBuilder.append("▪ Activity Focus: ").append(title2).append("\n");
-        devBuilder.append("▪ Teaching Method: ").append(strat2).append(" | Grouping: Desk Pairs\n\n");
-
-        devBuilder.append("Step 1 — Coherent Follow-Up Problem (4 Mins):\n");
-        devBuilder.append("   • Write on the chalkboard: ").append(synth.guidedPracticeProblem).append("\n\n");
-
-        devBuilder.append("Step 2 — Concrete-to-Abstract Verification (5 Mins):\n");
-        devBuilder.append("   • Learners model the follow-up problem using ").append(localRes)
-                .append(" and write out the complete mathematical working in their exercise books.\n\n");
-
-        devBuilder.append("Step 3 — Partner Error Check (3 Mins):\n");
-        devBuilder.append("   • Desk partners exchange books, compare their physical models made with ").append(localRes)
-                .append(", and check that units and formulas are accurate.\n\n");
-
-        devBuilder.append("Step 4 — Class Presentation (3 Mins):\n");
-        devBuilder.append("   • Invite 2 learners from different squads to demonstrate their solution using ").append(localRes).append(" at the front.");
-
-        devBuilder.append(STAGE_DIVIDER);
-        activitiesSummary.append("; ").append(title2);
-
-        // Stage 3: Structured Exit Ticket & Closure
-        devBuilder.append("STAGE 3: STRUCTURED EXIT TICKET & CLOSURE (").append(exitMins).append(" MINS)\n");
-        devBuilder.append("▪ Assessment Type: Individual Written Exit Ticket (").append(capitalize(contextDesc)).append(")\n\n");
-        devBuilder.append("Step 1 — Chalkboard Exit Ticket Problem (3 Mins):\n");
-        devBuilder.append("   • ").append(synth.exitTicketQuestion).append("\n\n");
-        devBuilder.append("Step 2 — Expected Model Solution (Teacher Marking Key):\n");
-        devBuilder.append("   • ").append(synth.exitTicketSolution).append("\n\n");
-        devBuilder.append("Step 3 — Collection & Wrap-Up (2 Mins):\n");
-        devBuilder.append("   • Learners hold up their written working for a rapid check.\n");
-        devBuilder.append("   • Material Custodians count and return all ").append(localRes).append(" to the classroom storage box.");
-
-        lesson.setMainActivities(activitiesSummary.toString());
-        lesson.setLessonDevelopment(devBuilder.toString());
+        lesson.setMainActivities(activitiesSummary);
 
         // 5. Formative Assessment & Multi-Pathway 4-Tier CBC Rubric (Offline SNE Adaptive)
         lesson.setAssessmentMethods(InclusiveSNEPedagogyHelper.buildInclusiveAssessmentSection(
@@ -480,16 +379,20 @@ public class LessonGenerator {
         ));
 
         // 6. Large Class Adaptation & Universal Design for Learning (UDL) SNE Inclusivity
+        String layoutDesc = (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING)
+                ? "Semi-circular horseshoe seating layout with direct unobstructed sightlines to the teacher's signing hands"
+                : "Structured inclusive pods with clear classroom pathways and peer guide pairs";
+
         lesson.setLargeClassAdaptation(
-                "▪ Inclusive Squad Organization for " + params.classSize + " Learners (" + squadCount + " Squads of " + squadSize + "):\n\n" +
-                "1. Squad Leader / Facilitator:\n" +
-                "   Reads/signs the " + contextDesc + " problem and ensures every learner touches and explores " + localRes + ".\n\n" +
-                "2. Material Custodian (Great role for ADHD/Kinesthetic learners):\n" +
-                "   Collects, counts, and distributes all " + localRes + " before and after the investigation.\n\n" +
-                "3. Scribe & Diagram Specialist (Pairs with SNE/motor partners):\n" +
-                "   Records the squad's concrete findings, tactile measurements, and calculations in exercise books.\n\n" +
-                "4. Timekeeper & Reporter:\n" +
-                "   Monitors time allocation and demonstrates the squad's solution to the class."
+                "▪ SNE Pod Organization for " + params.classSize + " Learners (" + squadCount + " Pods of " + squadSize + "):\n\n" +
+                "1. Classroom Seating & Sightlines:\n" +
+                "   " + layoutDesc + ".\n\n" +
+                "2. Pod Leader / Facilitator:\n" +
+                "   Directs peer interaction, confirms everyone has visual/tactile access to " + localRes + ".\n\n" +
+                "3. Material Custodian:\n" +
+                "   Collects, counts, and returns all " + localRes + " before and after the investigation.\n\n" +
+                "4. Visual Scribe / Buddy Partner:\n" +
+                "   Works alongside SNE peer assisting with diagram recording and peer card verification."
         );
 
         lesson.setInclusionNotes(InclusiveSNEPedagogyHelper.buildSNEInclusionSection(

@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 
 import ke.co.mwalimuai.database.CurriculumEntity;
 import ke.co.mwalimuai.generator.LessonGenerator;
+import ke.co.mwalimuai.sne.InclusiveSNEPedagogyHelper;
 import ke.co.mwalimuai.utils.CurriculumBreakdownHelper;
 
 /**
@@ -181,12 +182,12 @@ public class OnDeviceSlmEngine {
         if (isModelDownloaded(activity)) {
             initializeIfModelPresent(activity.getApplicationContext());
             if (forceShowEvenIfDismissed) {
-                Toast.makeText(activity, "Qwen2.5-0.5B Offline AI Model is already downloaded and active!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Offline SNE AI Model is already downloaded and active!", Toast.LENGTH_SHORT).show();
             }
             return;
         }
         if (isDownloading) {
-            Toast.makeText(activity, "Qwen2.5-0.5B model download is already in progress...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Offline SNE AI download is already in progress...", Toast.LENGTH_SHORT).show();
             return;
         }
         if (downloadPromptShownThisSession && !forceShowEvenIfDismissed) {
@@ -198,7 +199,7 @@ public class OnDeviceSlmEngine {
             if (forceShowEvenIfDismissed) {
                 new AlertDialog.Builder(activity)
                         .setTitle("Offline Mode Active")
-                        .setMessage("The full Qwen2.5-0.5B AI model (" + QWEN_MODEL_SIZE_DISPLAY + ") is not downloaded yet and no internet connection was detected.\n\n" +
+                        .setMessage("The full Offline SNE AI model (" + QWEN_MODEL_SIZE_DISPLAY + ") is not downloaded yet and no internet connection was detected.\n\n" +
                                 "You can continue using the built-in Instant Lesson Synthesizer offline now, and download the " + QWEN_MODEL_SIZE_DISPLAY + " AI model whenever you connect to Wi-Fi or Mobile Data.")
                         .setPositiveButton("OK", null)
                         .show();
@@ -220,7 +221,7 @@ public class OnDeviceSlmEngine {
                         "Once downloaded, the full SNE AI model runs 100% offline on your phone for free-form prompts and adaptive lesson generation.\n\n" +
                         "Would you like to download the " + QWEN_MODEL_SIZE_DISPLAY + " model now using " + connType + "?")
                 .setCancelable(true)
-                .setPositiveButton("Yes, Download (" + QWEN_MODEL_SIZE_DISPLAY + ")", (dialog, which) -> {
+                .setPositiveButton("Download (" + QWEN_MODEL_SIZE_DISPLAY + ")", (dialog, which) -> {
                     startModelDownloadWithProgress(activity);
                 })
                 .setNegativeButton("Later (Use Instant Mode)", (dialog, which) -> {
@@ -384,8 +385,9 @@ public class OnDeviceSlmEngine {
     }
 
     /**
-     * Builds the Qwen2.5-0.5B-Instruct chat-formatted KICD Curriculum RAG prompt.
-     * Explicitly instructs Qwen2.5-0.5B to tie the scenario directly to the teacher's materials.
+     * Builds the chat-formatted KICD SNE Curriculum RAG prompt for on-device AI generation.
+     * Instructs the model to freely adapt practical visual/tactile classroom steps
+     * directly around the teacher's exact materials without rigid boilerplate.
      */
     public String buildCurriculumRagPrompt(
             CurriculumEntity curr,
@@ -397,32 +399,47 @@ public class OnDeviceSlmEngine {
         String strand = curr != null && curr.getStrand() != null ? curr.getStrand() : "Numbers";
         String subStrand = curr != null && curr.getSubStrand() != null ? curr.getSubStrand() : "Whole numbers";
         String pages = curr != null && curr.getSourcePdfPages() != null ? curr.getSourcePdfPages() : "13-17";
+        InclusiveSNEPedagogyHelper.SNEProfile profile = InclusiveSNEPedagogyHelper.detectProfile(params.learningNeed);
 
         StringBuilder prompt = new StringBuilder();
         prompt.append("<|im_start|>system\n");
-        prompt.append("You are an expert Kenyan KICD Grade 6 CBE Mathematics teacher. ");
-        prompt.append("The classroom scenario MUST be directly about the teacher's exact materials (").append(params.availableResources).append("). ");
-        prompt.append("Never mention unrelated objects. Explain step-by-step how learners physically manipulate ")
-                .append(params.availableResources).append(" to solve the problem.<|im_end|>\n");
+        if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING) {
+            prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics for Learners with Hearing Impairment (Deaf / KSL). ");
+            prompt.append("All instruction is 100% visual and uses Kenya Sign Language (KSL). No spoken or auditory activities exist. ");
+            prompt.append("Freely adapt the lesson: show how deaf learners visually and physically manipulate the teacher's exact materials (")
+                    .append(params.availableResources).append(") using KSL signs, desk action cards, and visual realia to model and solve the math problem. Be creative, practical, and direct. Do not use fixed templates.<|im_end|>\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.BLIND_LOW_VISION) {
+            prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics for Learners with Visual Impairment (Blind / Low Vision). ");
+            prompt.append("All instruction is tactile, kinesthetic, and audio-described. Freely adapt the lesson: show how blind learners touch, count, and physically manipulate the teacher's exact materials (")
+                    .append(params.availableResources).append(") using knots, raised edges, and tactile landmarks to solve the math problem. Do not use fixed templates.<|im_end|>\n");
+        } else {
+            prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics adapting for ")
+                    .append(InclusiveSNEPedagogyHelper.getProfileTargetName(profile)).append(". ");
+            prompt.append("Freely adapt the lesson: show how learners physically manipulate the teacher's exact materials (")
+                    .append(params.availableResources).append(") using concrete, differentiated, and inclusive steps to solve the math problem. Do not use fixed templates.<|im_end|>\n");
+        }
+
         prompt.append("<|im_start|>user\n");
-        prompt.append("Topic: ").append(strand).append(" - ").append(subStrand).append(" (KICD Pages ").append(pages).append(")\n");
+        prompt.append("SNE Target: ").append(InclusiveSNEPedagogyHelper.getProfileTitle(profile)).append("\n");
+        prompt.append("Grade 6 SNE Mathematics Topic: ").append(strand).append(" — ").append(subStrand).append(" (KICD SNE Curriculum pp. ").append(pages).append(")\n");
         if (breakdown != null && !breakdown.learningOutcomes.isEmpty()) {
-            prompt.append("KICD Outcome: ").append(breakdown.learningOutcomes.get(0)).append("\n");
+            prompt.append("Curriculum Focus: ").append(breakdown.learningOutcomes.get(0)).append("\n");
         }
-        prompt.append("Materials in Use: ").append(params.availableResources).append("\n");
-        prompt.append("Material-Connected Scenario: ").append(scenarioTitle).append("\n");
-        prompt.append("Problem to Solve Using ").append(params.availableResources).append(": ").append(synthesizedMathExample).append("\n");
+        prompt.append("Materials Available: ").append(params.availableResources).append("\n");
+        prompt.append("Practical Context: ").append(scenarioTitle).append("\n");
+        prompt.append("Math Problem: ").append(synthesizedMathExample).append("\n");
         if (params.customActivityOrHook != null && !params.customActivityOrHook.trim().isEmpty()) {
-            prompt.append("Teacher Request: ").append(params.customActivityOrHook.trim()).append("\n");
+            prompt.append("Teacher Notes: ").append(params.customActivityOrHook.trim()).append("\n");
         }
-        prompt.append("\nWrite 3 concise, numbered classroom steps (1., 2., 3.) showing how squads of learners physically use ")
+        prompt.append("\nFreely generate 3 practical, step-by-step classroom actions (1., 2., 3.) showing how learners in pods physically use ")
                 .append(params.availableResources)
-                .append(" in this scenario to model and solve the problem above:<|im_end|>\n<|im_start|>assistant\n");
+                .append(" to model and solve the problem, fully adapted for this SNE profile:<|im_end|>\n<|im_start|>assistant\n");
+
         return prompt.toString();
     }
 
     /**
-     * Runs on-device Qwen2.5-0.5B inference for lesson concrete manipulation steps.
+     * Runs on-device AI inference for lesson concrete manipulation steps.
      */
     public synchronized String generateRagResponse(
             Context context,
@@ -438,21 +455,21 @@ public class OnDeviceSlmEngine {
         }
         try {
             String prompt = buildCurriculumRagPrompt(curr, params, scenarioTitle, synthesizedMathExample);
-            Log.i(TAG, "Prompting Qwen2.5-0.5B SLM for sub-strand " + (curr != null ? curr.getSubStrand() : "") + " with materials: " + params.availableResources);
+            Log.i(TAG, "Prompting on-device AI for sub-strand " + (curr != null ? curr.getSubStrand() : "") + " with materials: " + params.availableResources);
             long t0 = System.currentTimeMillis();
             String response = llmInference.generateResponse(prompt);
-            Log.i(TAG, "Qwen2.5-0.5B SLM responded in " + (System.currentTimeMillis() - t0) + " ms");
+            Log.i(TAG, "On-device AI responded in " + (System.currentTimeMillis() - t0) + " ms");
             if (response != null && !response.trim().isEmpty()) {
                 return cleanModelOutput(response);
             }
         } catch (Throwable t) {
-            Log.w(TAG, "On-device SLM inference failed, using Material-Physics Synthesizer: " + t.getMessage());
+            Log.w(TAG, "On-device AI inference failed, using SNE Synthesizer: " + t.getMessage());
         }
         return null;
     }
 
     /**
-     * Runs free-form prompt inference on Qwen2.5-0.5B-Instruct when loaded on device.
+     * Runs free-form prompt inference on the on-device model when loaded.
      */
     public synchronized String generateFreeFormSlmResponse(
             Context context,
@@ -468,35 +485,44 @@ public class OnDeviceSlmEngine {
             return null;
         }
         try {
+            InclusiveSNEPedagogyHelper.SNEProfile profile = InclusiveSNEPedagogyHelper.detectProfile(userFreeFormPrompt);
             StringBuilder prompt = new StringBuilder();
             prompt.append("<|im_start|>system\n");
-            prompt.append("You are an offline AI assistant for Kenyan Grade 6 CBE Mathematics teachers (KICD Pages 13-70). ");
+            prompt.append("You are an offline AI assistant for Kenyan Grade 6 CBE Special Needs Education (SNE) Mathematics teachers. ");
+            if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING) {
+                prompt.append("Focus is Hearing Impairment (Deaf / KSL): all communication is visual and Kenya Sign Language (KSL), zero auditory/spoken actions. ");
+            } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.BLIND_LOW_VISION) {
+                prompt.append("Focus is Visual Impairment (Blind / Tactile): all communication is tactile, kinesthetic, and audio-described. ");
+            }
             prompt.append("Always build the scenario and steps strictly around the teacher's exact materials (").append(materials).append(").<|im_end|>\n");
             prompt.append("<|im_start|>user\n");
             prompt.append("Teacher Prompt: ").append(userFreeFormPrompt.trim()).append("\n");
+            prompt.append("SNE Target: ").append(InclusiveSNEPedagogyHelper.getProfileTitle(profile)).append("\n");
             prompt.append("Matched KICD Topic: ").append(topicName).append("\n");
             prompt.append("Materials to Use: ").append(materials).append("\n");
             prompt.append("Scenario: ").append(scenarioTitle).append("\n");
             prompt.append("Worked Math Problem: ").append(workedProblem).append("\n\n");
-            prompt.append("Explain in 3 clear numbered steps how the teacher and learners physically use ")
+            prompt.append("Freely generate 3 clear numbered steps showing how the teacher and learners physically use ")
                     .append(materials)
-                    .append(" in this scenario to teach ").append(topicName).append(":<|im_end|>\n<|im_start|>assistant\n");
+                    .append(" in this scenario to teach and solve ").append(topicName).append(" adapted for this SNE profile:<|im_end|>\n<|im_start|>assistant\n");
 
             long t0 = System.currentTimeMillis();
             String response = llmInference.generateResponse(prompt.toString());
-            Log.i(TAG, "Qwen2.5-0.5B Free-Form SLM responded in " + (System.currentTimeMillis() - t0) + " ms");
+            Log.i(TAG, "On-device Free-Form AI responded in " + (System.currentTimeMillis() - t0) + " ms");
             if (response != null && !response.trim().isEmpty()) {
                 return cleanModelOutput(response);
             }
         } catch (Throwable t) {
-            Log.w(TAG, "Free-form SLM generation failed: " + t.getMessage());
+            Log.w(TAG, "Free-form AI generation failed: " + t.getMessage());
         }
         return null;
     }
 
     private String cleanModelOutput(String raw) {
+        if (raw == null) return "";
         return raw.replace("<|im_end|>", "")
                 .replace("<|endoftext|>", "")
+                .replaceAll("(?i)\\b(qwen2?\\.5?(-0\\.5b)?(-instruct)?|slm|large language model|small language model)\\b", "Offline SNE AI")
                 .trim();
     }
 }

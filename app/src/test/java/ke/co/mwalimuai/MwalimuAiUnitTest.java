@@ -61,7 +61,7 @@ public class MwalimuAiUnitTest {
         assertEquals(40, lesson.getDurationMinutes());
         assertEquals(50, lesson.getClassSize());
         assertTrue(lesson.getLearningObjective().contains("Whole numbers"));
-        assertTrue(lesson.getLessonDevelopment().contains("Manipulative exploration"));
+        assertTrue(lesson.getLessonDevelopment().contains("STAGE 1: ADAPTED MULTISENSORY CONCRETE MODELING"));
     }
 
     @Test
@@ -256,5 +256,63 @@ public class MwalimuAiUnitTest {
         LessonEntity dyscLesson = LessonGenerator.generateLessonPlan(null, dyscParams, new ArrayList<>());
         assertTrue("Inclusion notes must provide CPA progression and Ten-Frames",
                 dyscLesson.getInclusionNotes().contains("CPA"));
+    }
+
+    @Test
+    public void testHearingImpairmentKslFullSNEFocus() {
+        LessonGenerator.LessonPlanningParameters params = new LessonGenerator.LessonPlanningParameters();
+        CurriculumEntity curr = new CurriculumEntity();
+        curr.setCurriculumId("G6-MATH-22");
+        curr.setStrand("Measurement");
+        curr.setSubStrand("Area");
+        curr.setSubStrandCode("2.2");
+        curr.setSourcePdfPages("37-39");
+
+        params.curriculum = curr;
+        params.availableResources = "strings, boxes, cartons";
+        params.durationMinutes = 40;
+        params.classSize = 48;
+        params.learningNeed = "Hearing Impairment / Deaf (KSL Sign Glosses & Visual Desk Cards)";
+
+        LessonEntity lesson = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
+
+        assertNotNull(lesson);
+        // 1. Simple, SNE-focused Title
+        assertTrue("Title must be SNE focused", lesson.getLessonTitle().startsWith("SNE (Hearing Impairment / KSL)"));
+
+        // 2. SNE Specific Learning Outcomes (KSL & visual arrangement)
+        assertTrue("Outcomes must include KSL", lesson.getLearningObjective().contains("Kenya Sign Language (KSL)"));
+        assertTrue("Outcomes must specify visual arrangement without auditory dependence",
+                lesson.getLearningObjective().contains("visual arrangement without auditory dependence"));
+
+        // 3. SNE Resources (desk action cards & horseshoe layout)
+        assertTrue("Resources must include 3-color desk action cards",
+                lesson.getResourcesNeeded().contains("3-Color Desk Action Indicator Cards"));
+        assertTrue("Resources must specify horseshoe seating",
+                lesson.getResourcesNeeded().contains("horseshoe"));
+
+        // 4. SNE Introduction (visual attention signal, zero verbal shouting)
+        assertTrue("Intro must feature visual attention signal",
+                lesson.getIntroduction().contains("Visual Attention Signal"));
+        assertTrue("Intro must avoid verbal shouting",
+                lesson.getIntroduction().contains("Strictly avoid verbal/auditory shouting"));
+
+        // 5. SNE Lesson Development (Stages 1, 2, 3)
+        assertTrue("Stage 1 must be Silent Visual & Concrete Modeling",
+                lesson.getLessonDevelopment().contains("STAGE 1: SILENT VISUAL & CONCRETE MODELING (KSL)"));
+        assertTrue("Stage 1 must include 3-color desk cards check",
+                lesson.getLessonDevelopment().contains("Desk-Level Visual Card Verification"));
+        assertTrue("Stage 2 must be KSL Peer Signing",
+                lesson.getLessonDevelopment().contains("STAGE 2: PEER SIGNING & HANDS-ON POD PRACTICE"));
+        assertTrue("Stage 3 must be Visual Exit Ticket",
+                lesson.getLessonDevelopment().contains("STAGE 3: VISUAL EXIT TICKET & SIGNED DEMONSTRATION"));
+
+        // 6. Assessment must not test spoken language
+        assertTrue("Assessment must note spoken auditory language is NOT assessed",
+                lesson.getAssessmentMethods().contains("Spoken auditory language is NOT assessed"));
+
+        // 7. No technical model names in user-facing lesson
+        assertTrue("No Qwen reference in title", !lesson.getLessonTitle().toLowerCase().contains("qwen"));
+        assertTrue("No Qwen reference in development", !lesson.getLessonDevelopment().toLowerCase().contains("qwen"));
     }
 }
