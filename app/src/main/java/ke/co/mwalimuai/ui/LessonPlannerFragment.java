@@ -143,19 +143,19 @@ public class LessonPlannerFragment extends Fragment {
         } else if (lower.contains("dyslexi") || lower.contains("reading")) {
             binding.tvActiveSNEIcon.setText("📖");
             binding.tvActiveSNETitle.setText("Dyslexia & Reading Difficulties");
-            binding.tvActiveSNESubtitle.setText("Visual Storyboards, Color-Coded Cues & Reduced Text");
-        } else if (lower.contains("dyscalculi") || lower.contains("number struggle")) {
+            binding.tvActiveSNESubtitle.setText("KICD SNE: Storyboards, Color-Coded Cues & Reading Windows");
+        } else if (lower.contains("dyscalculi") || lower.contains("number struggle") || lower.contains("math difficult")) {
             binding.tvActiveSNEIcon.setText("🧮");
-            binding.tvActiveSNETitle.setText("Dyscalculia (Math Difficulties)");
-            binding.tvActiveSNESubtitle.setText("Concrete CPA Progression, Dot Math & Ten-Frames");
+            binding.tvActiveSNETitle.setText("Dyscalculia (Math Learning Difficulties)");
+            binding.tvActiveSNESubtitle.setText("KICD SNE: Concrete CPA, Desk Ten-Frames & Formula Flip Cards");
         } else if (lower.contains("adhd") || lower.contains("focus") || lower.contains("attention")) {
             binding.tvActiveSNEIcon.setText("⚡");
             binding.tvActiveSNETitle.setText("ADHD & Attention Focus");
-            binding.tvActiveSNESubtitle.setText("3-Minute Micro-Intervals & Active Kinesthetic Roles");
+            binding.tvActiveSNESubtitle.setText("KICD SNE: 3-Min Micro-Sprints, Visual Timers & Kinesthetic Stations");
         } else if (lower.contains("motor") || lower.contains("physical")) {
             binding.tvActiveSNEIcon.setText("♿");
             binding.tvActiveSNETitle.setText("Motor & Physical Challenges");
-            binding.tvActiveSNESubtitle.setText("Adapted Manipulative Grips & Peer Scribe Protocol");
+            binding.tvActiveSNESubtitle.setText("KICD SNE: 20° Slant Boards, Adapted Grips & Pilot-Scribe Protocol");
         } else {
             binding.tvActiveSNEIcon.setText("🌟");
             binding.tvActiveSNETitle.setText("Universal Inclusive SNE");
@@ -286,7 +286,7 @@ public class LessonPlannerFragment extends Fragment {
         params.curriculum = selectedCurr;
         params.durationMinutes = duration;
         params.classSize = classSize;
-        params.availableResources = "chalkboard visual diagrams and geometric representations";
+        params.availableResources = ke.co.mwalimuai.sne.InclusiveSNEPedagogyHelper.getDefaultResources(selectedSNEProfile);
         params.learningNeed = selectedSNEProfile;
         params.customActivityOrHook = customHook;
 

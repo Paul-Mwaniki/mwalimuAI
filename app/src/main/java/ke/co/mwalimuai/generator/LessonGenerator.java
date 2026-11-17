@@ -360,6 +360,14 @@ public class LessonGenerator {
             activitiesSummary = "Silent Visual & KSL Concrete Modeling; KSL Peer Signing & Hands-On Pod Practice; Visual Exit Ticket & Signed Demonstration";
         } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.BLIND_LOW_VISION) {
             activitiesSummary = "Tactile Modeling & Kinesthetic Exploration; Tactile Pair Practice & Oral Verification; Tactile Exit Ticket";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSLEXIA) {
+            activitiesSummary = "Visual Storyboarding & Color-Coded Modeling; Paired Reading & Step Strip Solving; Low-Reading Exit Ticket";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSCALCULIA) {
+            activitiesSummary = "Concrete CPA Manipulation & Ten-Frames; Visual Dot Mapping & Guided Practice; Concrete Exit Demonstration";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.ADHD_EXECUTIVE_FUNCTION) {
+            activitiesSummary = "3-Min Micro-Sprints & Kinesthetic Modeling; Movement Station Pod Practice; Fast-Paced Progress Check Exit Ticket";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.MOTOR_PHYSICAL) {
+            activitiesSummary = "Adapted Grip / Slant Board Modeling; Pilot-and-Scribe Collaborative Practice; Multi-Pathway / Oral Exit Ticket";
         } else {
             activitiesSummary = "Adapted Concrete Modeling; Guided Pod Practice; Multi-Pathway Exit Ticket";
         }
@@ -379,9 +387,20 @@ public class LessonGenerator {
         ));
 
         // 6. Large Class Adaptation & Universal Design for Learning (UDL) SNE Inclusivity
-        String layoutDesc = (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING)
-                ? "Semi-circular horseshoe seating layout with direct unobstructed sightlines to the teacher's signing hands"
-                : "Structured inclusive pods with clear classroom pathways and peer guide pairs";
+        String layoutDesc;
+        if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DEAF_HARD_OF_HEARING) {
+            layoutDesc = "Semi-circular horseshoe seating layout with direct unobstructed sightlines to the teacher's signing hands";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.MOTOR_PHYSICAL) {
+            layoutDesc = "Ergonomic wide-aisle seating layout with wheelchair-accessible clearance, slant boards, and anti-slip desk stabilization";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.ADHD_EXECUTIVE_FUNCTION) {
+            layoutDesc = "Low-distraction workstation pods with defined movement pathways and front-facing visibility to visual timers";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSLEXIA) {
+            layoutDesc = "Paired peer-reading pods equipped with high-contrast colored task cards and reading window guides";
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSCALCULIA) {
+            layoutDesc = "CPA manipulative math stations equipped with permanent desk Ten-Frames and tactile dot counters";
+        } else {
+            layoutDesc = "Structured inclusive pods with clear classroom pathways and peer guide pairs";
+        }
 
         lesson.setLargeClassAdaptation(
                 "▪ SNE Pod Organization for " + params.classSize + " Learners (" + squadCount + " Pods of " + squadSize + "):\n\n" +

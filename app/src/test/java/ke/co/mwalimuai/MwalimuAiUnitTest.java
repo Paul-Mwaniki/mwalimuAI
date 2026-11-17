@@ -315,4 +315,143 @@ public class MwalimuAiUnitTest {
         assertTrue("No Qwen reference in title", !lesson.getLessonTitle().toLowerCase().contains("qwen"));
         assertTrue("No Qwen reference in development", !lesson.getLessonDevelopment().toLowerCase().contains("qwen"));
     }
+
+    @Test
+    public void testDyslexiaSNEFocus() {
+        LessonGenerator.LessonPlanningParameters params = new LessonGenerator.LessonPlanningParameters();
+        CurriculumEntity curr = new CurriculumEntity();
+        curr.setCurriculumId("G6-MATH-14");
+        curr.setStrand("Numbers");
+        curr.setSubStrand("Fractions");
+        curr.setSubStrandCode("1.4");
+        curr.setSourcePdfPages("23-27");
+
+        params.curriculum = curr;
+        params.durationMinutes = 40;
+        params.classSize = 45;
+        params.learningNeed = "Dyslexia & Reading Difficulties (Symbolic Storyboards & Color Cues)";
+
+        LessonEntity lesson = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
+        assertNotNull(lesson);
+
+        assertTrue("Title must specify Dyslexia / Visual Storyboard",
+                lesson.getLessonTitle().startsWith("SNE (Dyslexia / Visual Storyboard)"));
+        assertTrue("Resources must include storyboards and reading windows",
+                lesson.getResourcesNeeded().contains("Visual Math Storyboard") &&
+                lesson.getResourcesNeeded().contains("reading windows"));
+        assertTrue("Intro must feature Visual Storyboard hook",
+                lesson.getIntroduction().contains("Visual Storyboard & Iconic Hook"));
+        assertTrue("Stage 1 must feature Color-Coded Numerical Modeling",
+                lesson.getLessonDevelopment().contains("STAGE 1: VISUAL STORYBOARD & COLOR-CODED NUMERICAL MODELING"));
+        assertTrue("Stage 2 must feature Paired Reading",
+                lesson.getLessonDevelopment().contains("STAGE 2: PAIRED READING & SINGLE-STEP STRIP PRACTICE"));
+        assertTrue("Stage 3 must feature Low-Reading Graphic Exit Ticket",
+                lesson.getLessonDevelopment().contains("STAGE 3: LOW-READING GRAPHIC EXIT TICKET & CLOSURE"));
+        assertTrue("Assessment must protect against spelling penalties",
+                lesson.getAssessmentMethods().contains("spelling errors, and digit reversals are NOT penalized"));
+    }
+
+    @Test
+    public void testDyscalculiaSNEFocus() {
+        LessonGenerator.LessonPlanningParameters params = new LessonGenerator.LessonPlanningParameters();
+        CurriculumEntity curr = new CurriculumEntity();
+        curr.setCurriculumId("G6-MATH-13");
+        curr.setStrand("Numbers");
+        curr.setSubStrand("Division");
+        curr.setSubStrandCode("1.3");
+        curr.setSourcePdfPages("21-22");
+
+        params.curriculum = curr;
+        params.durationMinutes = 40;
+        params.classSize = 40;
+        params.learningNeed = "Dyscalculia (Concrete CPA, Dot Math & Ten-Frames)";
+
+        LessonEntity lesson = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
+        assertNotNull(lesson);
+
+        assertTrue("Title must specify Dyscalculia / CPA Concrete",
+                lesson.getLessonTitle().startsWith("SNE (Dyscalculia / CPA Concrete)"));
+        assertTrue("Resources must include Ten-Frames and flip cards",
+                lesson.getResourcesNeeded().contains("Ten-Frames") &&
+                lesson.getResourcesNeeded().contains("Flip Cards"));
+        assertTrue("Intro must feature CPA Realia Immersion",
+                lesson.getIntroduction().contains("Concrete CPA Realia Immersion"));
+        assertTrue("Stage 1 must feature Concrete CPA Modeling",
+                lesson.getLessonDevelopment().contains("STAGE 1: 100% CONCRETE CPA MODELING & DESK TEN-FRAMES"));
+        assertTrue("Stage 2 must feature Dot-to-Grid practice",
+                lesson.getLessonDevelopment().contains("STAGE 2: REPRESENTATIONAL DOT-TO-GRID POD PRACTICE"));
+        assertTrue("Stage 3 must feature Concrete Exit Ticket",
+                lesson.getLessonDevelopment().contains("STAGE 3: CONCRETE DEMONSTRATIVE EXIT TICKET & CLOSURE"));
+        assertTrue("Assessment must forbid timed drills",
+                lesson.getAssessmentMethods().contains("Timed calculations and mental arithmetic drills are strictly avoided"));
+    }
+
+    @Test
+    public void testAdhdSNEFocus() {
+        LessonGenerator.LessonPlanningParameters params = new LessonGenerator.LessonPlanningParameters();
+        CurriculumEntity curr = new CurriculumEntity();
+        curr.setCurriculumId("G6-MATH-21");
+        curr.setStrand("Measurement");
+        curr.setSubStrand("Length");
+        curr.setSubStrandCode("2.1");
+        curr.setSourcePdfPages("32-36");
+
+        params.curriculum = curr;
+        params.durationMinutes = 40;
+        params.classSize = 50;
+        params.learningNeed = "ADHD & Attention Focus (3-Min Micro-Intervals & Kinesthetic Roles)";
+
+        LessonEntity lesson = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
+        assertNotNull(lesson);
+
+        assertTrue("Title must specify ADHD / Micro-Sprint Intervals",
+                lesson.getLessonTitle().startsWith("SNE (ADHD / Micro-Sprint Intervals)"));
+        assertTrue("Resources must include Visual Countdown Timers and fidgets",
+                lesson.getResourcesNeeded().contains("Visual Countdown Timers") &&
+                lesson.getResourcesNeeded().contains("focus fidgets"));
+        assertTrue("Intro must feature Kinesthetic Hook & Timer Launch",
+                lesson.getIntroduction().contains("High-Energy Kinesthetic Hook & Timer Launch"));
+        assertTrue("Stage 1 must feature 3-Minute Micro-Sprints",
+                lesson.getLessonDevelopment().contains("STAGE 1: HIGH-TEMPO 3-MINUTE MICRO-SPRINTS & KINESTHETIC MODELING"));
+        assertTrue("Stage 2 must feature Movement Pods",
+                lesson.getLessonDevelopment().contains("STAGE 2: ACTIVE STATION PRACTICE & MOVEMENT PODS"));
+        assertTrue("Stage 3 must feature Chunked Rapid-Fire Exit Ticket",
+                lesson.getLessonDevelopment().contains("STAGE 3: CHUNKED RAPID-FIRE EXIT TICKET & PROGRESS REWARD"));
+    }
+
+    @Test
+    public void testMotorPhysicalSNEFocus() {
+        LessonGenerator.LessonPlanningParameters params = new LessonGenerator.LessonPlanningParameters();
+        CurriculumEntity curr = new CurriculumEntity();
+        curr.setCurriculumId("G6-MATH-31");
+        curr.setStrand("Geometry");
+        curr.setSubStrand("Lines");
+        curr.setSubStrandCode("3.1");
+        curr.setSourcePdfPages("56-58");
+
+        params.curriculum = curr;
+        params.durationMinutes = 40;
+        params.classSize = 36;
+        params.learningNeed = "Motor / Physical Challenges (Adapted Grips & Peer Scribing)";
+
+        LessonEntity lesson = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
+        assertNotNull(lesson);
+
+        assertTrue("Title must specify Motor Adaptation / Pilot & Scribe",
+                lesson.getLessonTitle().startsWith("SNE (Motor Adaptation / Pilot & Scribe)"));
+        assertTrue("Resources must include slant boards and grips",
+                lesson.getResourcesNeeded().contains("slant boards") &&
+                lesson.getResourcesNeeded().contains("triangular pencil grips"));
+        assertTrue("Intro must feature Ergonomic Station Adjustment and Pilot-Scribe",
+                lesson.getIntroduction().contains("Ergonomic Station Adjustment") &&
+                lesson.getIntroduction().contains("Pilot & Scribe Role Alignment"));
+        assertTrue("Stage 1 must feature Ergonomic Slant Board Modeling",
+                lesson.getLessonDevelopment().contains("STAGE 1: ERGONOMIC SLANT BOARD & MANIPULATIVE MODELING"));
+        assertTrue("Stage 2 must feature Pilot-and-Scribe practice",
+                lesson.getLessonDevelopment().contains("STAGE 2: PILOT-AND-SCRIBE COOPERATIVE POD PRACTICE"));
+        assertTrue("Stage 3 must feature Multi-Pathway Exit Ticket",
+                lesson.getLessonDevelopment().contains("STAGE 3: MULTI-PATHWAY (ORAL / POINTING / SCRIBE) EXIT TICKET"));
+        assertTrue("Assessment must include +30% time extension",
+                lesson.getAssessmentMethods().contains("+30% time extension"));
+    }
 }

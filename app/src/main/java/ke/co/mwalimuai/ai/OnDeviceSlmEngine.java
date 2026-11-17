@@ -411,6 +411,18 @@ public class OnDeviceSlmEngine {
         } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.BLIND_LOW_VISION) {
             prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics for Learners with Visual Impairment (Blind / Low Vision). ");
             prompt.append("All instruction is tactile, kinesthetic, and audio-described. Freely adapt the lesson: show how blind learners touch, count, and physically manipulate objects using knots, raised edges, and tactile landmarks to solve the math problem. Do not use fixed templates.<|im_end|>\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSLEXIA) {
+            prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics adapting for Learners with Dyslexia & Reading Difficulties. ");
+            prompt.append("Bypass word-dense text: instruct through visual storyboards, single-line reading cut-out windows, and color-coded numeral columns (Units in Green, Tens in Blue). Freely generate practical visual and paired-reading actions without text overload. Do not use fixed templates.<|im_end|>\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSCALCULIA) {
+            prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics adapting for Learners with Dyscalculia (Math Learning Difficulties). ");
+            prompt.append("Enforce strict Concrete-Representational-Abstract (CPA) progression: learners must touch and physically group counters on desk Ten-Frames before writing numbers. Use step-by-step formula flip cards with zero timed drill anxiety. Do not use fixed templates.<|im_end|>\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.ADHD_EXECUTIVE_FUNCTION) {
+            prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics adapting for Learners with ADHD & Executive Function Challenges. ");
+            prompt.append("Structure teaching into fast 3-minute micro-sprints with visual countdown timers, kinesthetic movement (floor lines / standing stations), and chunked single-problem task strips with active squad roles. Do not use fixed templates.<|im_end|>\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.MOTOR_PHYSICAL) {
+            prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics adapting for Learners with Motor & Physical Challenges. ");
+            prompt.append("Incorporate ergonomic slant boards, chunky grips, non-slip stabilized trays, and the 'Pilot and Scribe' cooperative peer protocol where the learner directs strategy while a peer scribe writes. Do not use fixed templates.<|im_end|>\n");
         } else {
             prompt.append("You are an expert Special Needs Education (SNE) teacher for Kenyan KICD Grade 6 CBE Mathematics adapting for ")
                     .append(InclusiveSNEPedagogyHelper.getProfileTargetName(profile)).append(". ");
@@ -420,7 +432,7 @@ public class OnDeviceSlmEngine {
         prompt.append("<|im_start|>user\n");
         prompt.append("SNE Target: ").append(InclusiveSNEPedagogyHelper.getProfileTitle(profile)).append("\n");
         prompt.append("Grade 6 SNE Mathematics Topic: ").append(strand).append(" — ").append(subStrand).append(" (KICD SNE Curriculum pp. ").append(pages).append(")\n");
-        prompt.append("Class Size: ").append(params.classSize).append(" learners (organized in horseshoe pods)\n");
+        prompt.append("Class Size: ").append(params.classSize).append(" learners (organized in structured SNE pods)\n");
         if (breakdown != null && !breakdown.learningOutcomes.isEmpty()) {
             prompt.append("Curriculum Focus: ").append(breakdown.learningOutcomes.get(0)).append("\n");
         }
@@ -433,6 +445,14 @@ public class OnDeviceSlmEngine {
             prompt.append("\nFreely generate 3 practical, step-by-step visual classroom actions (1., 2., 3.) showing how deaf learners in a class of ")
                     .append(params.classSize)
                     .append(" use KSL signing, visual diagrams, and desk action cards to solve this problem:<|im_end|>\n<|im_start|>assistant\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSLEXIA) {
+            prompt.append("\nFreely generate 3 practical, step-by-step visual storyboard actions (1., 2., 3.) showing how learners use color-coded numbers and reading windows to solve this problem:<|im_end|>\n<|im_start|>assistant\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.DYSCALCULIA) {
+            prompt.append("\nFreely generate 3 practical, step-by-step concrete CPA actions (1., 2., 3.) showing how learners use desk Ten-Frames and counters to solve this problem:<|im_end|>\n<|im_start|>assistant\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.ADHD_EXECUTIVE_FUNCTION) {
+            prompt.append("\nFreely generate 3 practical, step-by-step micro-sprint actions (1., 2., 3.) showing how learners use 3-minute timers, active roles, and single-task strips to solve this problem:<|im_end|>\n<|im_start|>assistant\n");
+        } else if (profile == InclusiveSNEPedagogyHelper.SNEProfile.MOTOR_PHYSICAL) {
+            prompt.append("\nFreely generate 3 practical, step-by-step ergonomic actions (1., 2., 3.) showing how learners use slant boards and Pilot-and-Scribe peer partnership to solve this problem:<|im_end|>\n<|im_start|>assistant\n");
         } else {
             prompt.append("\nFreely generate 3 practical, step-by-step classroom actions (1., 2., 3.) showing how learners in pods solve the problem, fully adapted for this SNE profile:<|im_end|>\n<|im_start|>assistant\n");
         }
