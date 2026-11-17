@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 import java.io.File;
 
 import ke.co.mwalimuai.R;
+import ke.co.mwalimuai.audio.OfflineAudioAssistant;
 import ke.co.mwalimuai.database.LessonEntity;
 import ke.co.mwalimuai.databinding.FragmentLessonPreviewBinding;
 import ke.co.mwalimuai.viewmodel.LessonViewModel;
@@ -28,6 +29,14 @@ public class LessonPreviewFragment extends Fragment {
     private FragmentLessonPreviewBinding binding;
     private LessonViewModel viewModel;
     private LessonEntity activeLesson;
+    private OfflineAudioAssistant audioAssistant;
+    private int currentAudioStage = 0; // 0=Intro, 1=Development/Step3, 2=Assessment/Rubric, 3=SNE Inclusion
+    private static final String[] STAGE_NAMES = {
+            "Intro & Hook",
+            "Hands-On Development",
+            "Assessment & Rubrics",
+            "SNE & UDL Inclusion"
+    };
 
     @Nullable
     @Override
@@ -99,6 +108,121 @@ public class LessonPreviewFragment extends Fragment {
 
         binding.btnExportWord.setOnClickListener(v -> exportWord());
         binding.btnExportPdf.setOnClickListener(v -> exportPdf());
+
+        setupAudioAssistant();
+    }
+
+    private void setupAudioAssistant() {
+        audioAssistant = new OfflineAudioAssistant(requireContext(), () -> {
+            if (binding != null && getActivity() != null) {
+                getActivity().runOnUiThread(() ->
+                        binding.tvAudioStatus.setText("Stage: " + STAGE_NAMES[currentAudioStage]));
+            }
+        });
+
+        binding.btnAudioPlayPause.setOnClickListener(v -> {
+            if (audioAssistant == null) return;
+            if (audioAssistant.isSpeaking()) {
+                audioAssistant.stop();
+                binding.btnAudioPlayPause.setText("🔊 Listen (TTS)");
+                binding.tvAudioStatus.setText("Audio Paused");
+            } else {
+                playCurrentStageAudio();
+            }
+        });
+
+        binding.btnAudioStageSkip.setOnClickListener(v -> {
+            currentAudioStage = (currentAudioStage + 1) % STAGE_NAMES.length;
+            binding.tvAudioStatus.setText("Selected: " + STAGE_NAMES[currentAudioStage]);
+            if (audioAssistant != null && audioAssistant.isSpeaking()) {
+                playCurrentStageAudio();
+            }
+        });
+
+        binding.btnAudioSpeed.setOnClickListener(v -> {
+            if (audioAssistant == null) return;
+            float current = audioAssistant.getSpeechRate();
+            float next;
+            String label;
+            if (current <= 0.85f) {
+                next = 1.0f;
+                label = "1.0x";
+            } else if (current <= 1.05f) {
+                next = 1.25f;
+                label = "1.2x";
+            } else {
+                next = 0.8f;
+                label = "0.8x";
+            }
+            audioAssistant.setSpeechRate(next);
+            binding.btnAudioSpeed.setText(label);
+        });
+    }
+
+    private void playCurrentStageAudio() {
+        if (activeLesson == null || audioAssistant == null) return;
+        String textToSpeak = getStageText(currentAudioStage);
+        if (textToSpeak.trim().isEmpty()) {
+            Toast.makeText(requireContext(), "No text available for this stage", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        binding.btnAudioPlayPause.setText("⏸ Pause");
+        binding.tvAudioStatus.setText("Playing: " + STAGE_NAMES[currentAudioStage]);
+
+        audioAssistant.speak(textToSpeak, new OfflineAudioAssistant.AudioListener() {
+            @Override
+            public void onAudioStarted() {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        if (binding != null) {
+                            binding.btnAudioPlayPause.setText("⏸ Pause");
+                            binding.tvAudioStatus.setText("Playing: " + STAGE_NAMES[currentAudioStage]);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onAudioCompleted() {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        if (binding != null) {
+                            binding.btnAudioPlayPause.setText("🔊 Listen (TTS)");
+                            binding.tvAudioStatus.setText(STAGE_NAMES[currentAudioStage] + " • Done");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onAudioError(String message) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        if (binding != null) {
+                            binding.btnAudioPlayPause.setText("🔊 Listen (TTS)");
+                            binding.tvAudioStatus.setText("Audio ready");
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private String getStageText(int stage) {
+        if (activeLesson == null) return "";
+        switch (stage) {
+            case 0:
+                return "Lesson Title: " + activeLesson.getLessonTitle() + ". " + activeLesson.getIntroduction();
+            case 1:
+                return "Hands-On Lesson Development: " + activeLesson.getLessonDevelopment();
+            case 2:
+                return "Formative Assessment and Rubric: " + activeLesson.getAssessmentMethods();
+            case 3:
+                return "Special Needs Education and Universal Design: " + activeLesson.getInclusionNotes();
+            default:
+                return activeLesson.getIntroduction();
+        }
     }
 
     private void displayLesson(LessonEntity lesson) {
@@ -177,6 +301,10 @@ public class LessonPreviewFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (audioAssistant != null) {
+            audioAssistant.shutdown();
+            audioAssistant = null;
+        }
         binding = null;
     }
 }

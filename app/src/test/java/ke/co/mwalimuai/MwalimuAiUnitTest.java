@@ -190,11 +190,71 @@ public class MwalimuAiUnitTest {
         LessonEntity plan1 = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
         LessonEntity plan2 = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
 
-        // Verify different scenarios are generated on consecutive runs
-        assertTrue("Consecutive generations for the same sub-strand should rotate scenarios",
-                !plan1.getLessonTitle().equals(plan2.getLessonTitle()));
+        // Verify different math problems and exit tickets are dynamically synthesized on consecutive runs
+        assertTrue("Consecutive generations for the same sub-strand must synthesize unique math problems",
+                !plan1.getLessonDevelopment().equals(plan2.getLessonDevelopment()));
         // Verify no TinyML score jargon in teacher-facing lesson development
         assertTrue("Lesson development must not expose internal TinyML Rank Score",
                 !plan1.getLessonDevelopment().contains("TinyML"));
+    }
+
+    @Test
+    public void testProceduralMathSynthesizerAllSubStrandsUnique() {
+        String[] codes = {"1.1", "1.2", "1.3", "1.4", "1.5", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "3.1", "3.2", "3.3", "4.1", "5.1"};
+        for (String code : codes) {
+            ke.co.mwalimuai.generator.ProceduralMathSynthesizer.SynthesizedPedagogy s1 =
+                    ke.co.mwalimuai.generator.ProceduralMathSynthesizer.synthesize(code, "SubStrand " + code, "mango seeds and sticks");
+            assertNotNull("Synthesized pedagogy should not be null for " + code, s1);
+            assertTrue("Concrete steps must weave in custom material for " + code,
+                    s1.concreteMaterialHowTo.contains("mango seeds and sticks"));
+            assertTrue("Worked example should not be empty for " + code, !s1.workedExample.isEmpty());
+            assertTrue("Exit ticket solution should not be empty for " + code, !s1.exitTicketSolution.isEmpty());
+        }
+    }
+
+    @Test
+    public void testAreaWithStringsAndBoxesAndFreeFormPrompt() {
+        LessonGenerator.LessonPlanningParameters params =
+                LessonGenerator.parseFreeFormPrompt("Teach Area of a triangle for 48 learners using strings and boxes", null);
+        assertEquals("2.2", params.curriculum.getSubStrandCode());
+        assertEquals(48, params.classSize);
+        assertTrue(params.availableResources.toLowerCase().contains("strings"));
+        assertTrue(params.availableResources.toLowerCase().contains("boxes"));
+
+        LessonEntity lesson = LessonGenerator.generateLessonPlan(null, params, new ArrayList<>());
+        assertNotNull(lesson);
+        assertTrue("Lesson development must explain flattening the box and stretching the string across the diagonal",
+                lesson.getLessonDevelopment().toLowerCase().contains("diagonal"));
+        assertTrue("Lesson development must not mention unrelated flowerbed when strings and boxes are used",
+                !lesson.getLessonDevelopment().toLowerCase().contains("flowerbed"));
+    }
+
+    @Test
+    public void testSNEInclusiveAdaptationsAndRubrics() {
+        // 1. Blind SNE Test
+        LessonGenerator.LessonPlanningParameters blindParams =
+                LessonGenerator.parseFreeFormPrompt("Teach Area of a triangle using strings and boxes for a class with 2 blind learners", null);
+        assertTrue(blindParams.learningNeed.toLowerCase().contains("blind"));
+        LessonEntity blindLesson = LessonGenerator.generateLessonPlan(null, blindParams, new ArrayList<>());
+        assertTrue("Inclusion notes must provide tactile string knots for blind learners",
+                blindLesson.getInclusionNotes().toLowerCase().contains("knots"));
+        assertTrue("Assessment must provide multi-pathway evidence and remedial prescription",
+                blindLesson.getAssessmentMethods().contains("Automated Offline Remedial Prescription"));
+
+        // 2. Deaf SNE Test
+        LessonGenerator.LessonPlanningParameters deafParams =
+                LessonGenerator.parseFreeFormPrompt("Teach Fractions using seeds and sticks with KSL sign language for deaf learners", null);
+        assertTrue(deafParams.learningNeed.toLowerCase().contains("deaf"));
+        LessonEntity deafLesson = LessonGenerator.generateLessonPlan(null, deafParams, new ArrayList<>());
+        assertTrue("Inclusion notes must provide KSL sign glosses",
+                deafLesson.getInclusionNotes().contains("KSL"));
+
+        // 3. Dyscalculia SNE Test
+        LessonGenerator.LessonPlanningParameters dyscParams =
+                LessonGenerator.parseFreeFormPrompt("Teach Division using bottle tops for learners with dyscalculia", null);
+        assertTrue(dyscParams.learningNeed.toLowerCase().contains("dyscalculia"));
+        LessonEntity dyscLesson = LessonGenerator.generateLessonPlan(null, dyscParams, new ArrayList<>());
+        assertTrue("Inclusion notes must provide CPA progression and Ten-Frames",
+                dyscLesson.getInclusionNotes().contains("CPA"));
     }
 }
