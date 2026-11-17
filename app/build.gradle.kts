@@ -60,8 +60,9 @@ dependencies {
     // Gson JSON parser
     implementation(libs.gson)
 
-    // TensorFlow Lite
+    // TensorFlow Lite & MediaPipe On-Device GenAI (SLM)
     implementation(libs.tensorflow.lite)
+    implementation(libs.mediapipe.tasks.genai)
 
     // Splash Screen
     implementation(libs.core.splashscreen)

@@ -49,6 +49,7 @@ venv/
 .venv/
 *.gguf
 *.bin
+*.task
 *.pt
 *.pth
 *.safetensors
