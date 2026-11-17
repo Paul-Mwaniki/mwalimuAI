@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_assignment"
         android:title="@string/nav_planner" />
     <item
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/ic_smart_toy"
+        android:title="AI Prompt" />
+    <item
         android:id="@+id/navigation_curriculum"
         android:icon="@drawable/ic_menu_book"
         android:title="@string/nav_curriculum" />

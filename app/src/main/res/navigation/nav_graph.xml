@@ -25,6 +25,16 @@
         tools:layout="@layout/fragment_grade6_math" />
 
     <fragment
+        android:id="@+id/navigation_chat"
+        android:name="ke.co.mwalimuai.ui.OfflineChatFragment"
+        android:label="Free-Form AI Prompt"
+        tools:layout="@layout/fragment_offline_chat">
+        <action
+            android:id="@+id/action_chat_to_preview"
+            app:destination="@id/navigation_preview" />
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_planner"
         android:name="ke.co.mwalimuai.ui.LessonPlannerFragment"
         android:label="CBE Lesson Plan"

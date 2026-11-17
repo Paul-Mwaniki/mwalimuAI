@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import ke.co.mwalimuai.ai.OnDeviceSlmEngine;
 import ke.co.mwalimuai.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.navigation_home,
                     R.id.navigation_planner,
+                    R.id.navigation_chat,
                     R.id.navigation_curriculum
             ).build();
 
@@ -75,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check if Qwen2.5-0.5B model is downloaded; if not, and internet/Wi-Fi is connected, prompt user
+        OnDeviceSlmEngine.getInstance(this).promptModelDownloadIfNeeded(this, false);
     }
 
     @Override
