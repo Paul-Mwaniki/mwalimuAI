@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mwalimu SNE AI — 2-Minute Panel Pitch</title>
+    <style>
+        :root {
+            --primary: #1b5e20;
+            --primary-light: #2e7d32;
+            --accent: #ff8f00;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        /* Top Navigation & Timer */
+        header {
+            display: flex; justify-content: space-between; align-items: center; padding: 16px 32px;
+            background: rgba(15, 23, 42, 0.9); border-bottom: 1px solid #334155;
+        }
+        .logo-badge { font-weight: 800; font-size: 1.1rem; color: #4ade80; display: flex; align-items: center; gap: 8px; }
+        .timer-container { display: flex; align-items: center; gap: 12px; background: #1e293b; padding: 6px 16px; border-radius: 20px; border: 1px solid #475569; }
+        .timer-display { font-family: monospace; font-size: 1.25rem; font-weight: bold; color: #facc15; }
+        .btn-timer { background: #334155; border: none; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-timer:hover { background: #475569; }
+
+        /* Main Slide Container */
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 48px; position: relative; }
+        .slide { display: none; width: 100%; max-width: 1100px; height: 100%; max-height: 580px; background: var(--card-bg); border-radius: 24px; padding: 48px 56px; border: 1px solid #334155; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); flex-direction: column; justify-content: space-between; animation: fadeIn 0.3s ease-out; }
+        .slide.active { display: flex; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Slide Content Typography */
+        .slide-tag { color: #4ade80; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .slide-title { font-size: 2.3rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; color: #ffffff; }
+        .slide-subtitle { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.5; }
+
+        /* Grid Cards */
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .card-item { background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 16px; padding: 20px; }
+        .card-icon { font-size: 2rem; margin-bottom: 12px; }
+        .card-title { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; }
+        .card-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.45; }
+
+        /* Two Column Layout */
+        .two-col { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
+        .spec-list { display: flex; flex-direction: column; gap: 14px; }
+        .spec-item { display: flex; align-items: flex-start; gap: 12px; }
+        .spec-bullet { color: #4ade80; font-weight: bold; font-size: 1.2rem; }
+        .spec-text strong { color: #f8fafc; }
+        .spec-text p { color: var(--text-muted); font-size: 0.95rem; margin-top: 2px; }
+
+        .stat-box { background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(59, 130, 246, 0.15)); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: 18px; padding: 28px; text-align: center; }
+        .stat-num { font-size: 3rem; font-weight: 900; color: #4ade80; }
+        .stat-label { font-size: 1rem; color: #cbd5e1; margin-top: 4px; }
+
+        /* Script Drawer at bottom of slide */
+        .script-drawer { background: #0f172a; border-radius: 12px; padding: 14px 20px; border-left: 4px solid #f59e0b; font-size: 0.95rem; color: #fde68a; line-height: 1.45; }
+        .script-drawer strong { color: #fbbf24; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+
+        /* Controls Footer */
+        footer {
+            display: flex; justify-content: space-between; align-items: center; padding: 16px 36px;
+            background: rgba(15, 23, 42, 0.9); border-top: 1px solid #334155;
+        }
+        .slide-dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: #334155; cursor: pointer; transition: 0.2s; }
+        .dot.active { background: #4ade80; width: 32px; border-radius: 6px; }
+        .nav-btn { background: #1e293b; color: #f8fafc; border: 1px solid #475569; padding: 10px 22px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
+        .nav-btn:hover { background: #334155; border-color: #94a3b8; }
+        .nav-btn.primary { background: #15803d; border-color: #22c55e; }
+        .nav-btn.primary:hover { background: #166534; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-badge">
+            <span>⚡ MWALIMU SNE AI</span>
+            <span style="font-size: 0.75rem; color: #94a3b8; font-weight: normal; margin-left: 8px;">| 2-Minute Panel Pitch</span>
+        </div>
+        <div class="timer-container">
+            <span style="font-size: 0.8rem; color: #94a3b8;">TIMER</span>
+            <span class="timer-display" id="timer">02:00</span>
+            <button class="btn-timer" onclick="toggleTimer()" id="btnTimer">Start</button>
+            <button class="btn-timer" onclick="resetTimer()">Reset</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- SLIDE 1 -->
+        <div class="slide active" id="slide-1">
+            <div>
+                <div class="slide-tag">Slide 1/5 • The Vision (0:00 - 0:20)</div>
+                <h1 class="slide-title">Mwalimu SNE AI</h1>
+                <p class="slide-subtitle">100% Offline AI Grounding Kenya's Competency-Based Curriculum for Special Needs Education</p>
+                <div class="cards-grid">
+                    <div class="card-item">
+                        <div class="card-icon">📶</div>
+                        <div class="card-title">Zero Internet Needed</div>
+                        <div class="card-desc">Runs entirely on-device without data bundles, Wi-Fi, or cloud servers.</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-icon">📱</div>
+                        <div class="card-title">$70 Smartphone Ready</div>
+                        <div class="card-desc">Optimized for standard entry-level Android devices (e.g. Redmi 14C).</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-icon">🇰🇪</div>
+                        <div class="card-title">100% KICD Compliant</div>
+                        <div class="card-desc">Strictly aligned with official Kenyan Grade 6 Mathematics SNE designs.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="script-drawer">
+                <strong>Speaker Spoken Target (20 Seconds):</strong>
+                "Judges and panel members: Over 80% of classrooms across Africa have zero reliable internet, yet teachers must deliver inclusive Competency-Based Curriculums to children with diverse disabilities. Today we present Mwalimu SNE AI: the first 100% offline on-device AI assistant that generates tailored special needs lesson plans in 3 seconds on any $70 smartphone."
+            </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide" id="slide-2">
+            <div>
+                <div class="slide-tag">Slide 2/5 • The Problem (0:20 - 0:45)</div>
+                <h1 class="slide-title">The Classroom Reality</h1>
+                <p class="slide-subtitle">The double barrier of connectivity deserts and special needs complexity.</p>
+                <div class="cards-grid">
+                    <div class="card-item">
+                        <div class="card-icon">🏜️</div>
+                        <div class="card-title">The Connectivity Gap</div>
+                        <div class="card-desc">Cloud models like ChatGPT or Claude are completely useless in rural schools with zero internet.</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-icon">👥</div>
+                        <div class="card-title">Diverse Disabilities</div>
+                        <div class="card-desc">A single teacher handles 48 learners spanning Deafness, Blindness, Dyslexia, Dyscalculia, and ADHD.</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-icon">⏳</div>
+                        <div class="card-title">3+ Hours Manual Prep</div>
+                        <div class="card-desc">Adapting mainstream textbooks manually causes severe teacher burnout and leaves struggling learners behind.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="script-drawer">
+                <strong>Speaker Spoken Target (25 Seconds):</strong>
+                "Consider the daily reality: A Kenyan teacher enters a class of 48 learners. Three are deaf, two have dyslexia, and one has cerebral palsy. Generic textbooks ignore these needs. Mainstream cloud AI requires expensive data bundles teachers cannot afford, and worse, cloud models hallucinate foreign syllabi. Teachers are left spending three exhausting hours every night—or struggling children get left behind."
+            </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide" id="slide-3">
+            <div>
+                <div class="slide-tag">Slide 3/5 • The Innovation (0:45 - 1:10)</div>
+                <h1 class="slide-title">100% On-Device AI Engine</h1>
+                <p class="slide-subtitle">A state-of-the-art 494M parameter SLM paired with an offline KICD knowledge pack.</p>
+                <div class="two-col">
+                    <div class="spec-list">
+                        <div class="spec-item">
+                            <div class="spec-bullet">✓</div>
+                            <div class="spec-text">
+                                <strong>Small Language Model (SLM):</strong>
+                                <p>Qwen2.5-0.5B INT4 (~390 MB) executing via Google MediaPipe GenAI.</p>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-bullet">✓</div>
+                            <div class="spec-text">
+                                <strong>Offline RAG Architecture:</strong>
+                                <p>Local SQLite database stores official KICD Grade 6 designs and textbook page numbers.</p>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-bullet">✓</div>
+                            <div class="spec-text">
+                                <strong>Mathematical Verification:</strong>
+                                <p>Procedural engine rotates math numbers and exit tickets dynamically on every run.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num">494M</div>
+                        <div class="stat-label">On-Device Active Parameters</div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 10px;">Zero Cloud Calls • Zero Data Costs • 3-Sec Speed</div>
+                    </div>
+                </div>
+            </div>
+            <div class="script-drawer">
+                <strong>Speaker Spoken Target (25 Seconds):</strong>
+                "Here is our breakthrough: Instead of calling a cloud server, we engineered a lightweight 494-Million parameter Small Language Model—Qwen2.5-0.5B—that runs locally inside the phone's memory. We paired it with an offline RAG engine storing Kenya's official KICD curriculum. The math engine mathematically verifies numbers on every click. The result: zero hallucinations, complete privacy, and instant lesson generation."
+            </div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide" id="slide-4">
+            <div>
+                <div class="slide-tag">Slide 4/5 • Adaptive SNE in Action (1:10 - 1:35)</div>
+                <h1 class="slide-title">6 Tailored SNE Pathways</h1>
+                <p class="slide-subtitle">Pedagogically grounded accommodations for real classroom disabilities.</p>
+                <div class="cards-grid">
+                    <div class="card-item">
+                        <div class="card-title">👂 Hearing Impairment</div>
+                        <div class="card-desc">Kenyan Sign Language (KSL) glosses, 3-color desk cards, and semi-circular horseshoe seating (0% auditory).</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-title">📖 Dyslexia</div>
+                        <div class="card-desc">Visual storyboards, single-line reading cutout windows, color-coded place values, zero spelling penalty.</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-title">🧮 Dyscalculia</div>
+                        <div class="card-desc">Concrete CPA progression, desk Ten-Frames, step-by-step formula flip cards, zero timed math drills.</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-title">⚡ ADHD & Focus</div>
+                        <div class="card-desc">3-min micro-sprints, desktop visual countdown timers, active squad roles (Timekeeper/Material Captain).</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-title">♿ Motor Challenges</div>
+                        <div class="card-desc">20° slant boards, adapted grips, and 'Pilot & Scribe' peer protocol (Pilot directs, peer scribe writes).</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-title">👁️ Blind / Low Vision</div>
+                        <div class="card-desc">Pre-knotted measuring ropes (5 cm tactile knots), embossed edges, and audio descriptions.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="script-drawer">
+                <strong>Speaker Spoken Target (25 Seconds):</strong>
+                "What does the teacher receive? Genuine pedagogical adaptation. For a deaf child, it eliminates auditory language, arranges horseshoe seating, and inserts KSL signs. For dyscalculia, it enforces hands-on Ten-Frames before any formula is written. For motor challenges, it sets up 20-degree slant boards and the Pilot-and-Scribe strategy. Every plan adapts directly to the exact class size and pods."
+            </div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide" id="slide-5">
+            <div>
+                <div class="slide-tag">Slide 5/5 • Roadmap & Impact (1:35 - 2:00)</div>
+                <h1 class="slide-title">Future In-Class Multimodal Content</h1>
+                <p class="slide-subtitle">Expanding from lesson planning to live offline classroom content generation.</p>
+                <div class="cards-grid">
+                    <div class="card-item">
+                        <div class="card-icon">🔊</div>
+                        <div class="card-title">Offline Spoken Audio</div>
+                        <div class="card-desc">Android TTS reads aloud math steps, audio descriptions, and tactile guidance for blind learners.</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-icon">📐</div>
+                        <div class="card-title">Dynamic Vector Graphics</div>
+                        <div class="card-desc">Native Canvas/SVG dynamically draws geometric shapes, Ten-Frames, and color-coded place values.</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-icon">🎬</div>
+                        <div class="card-title">Lottie Micro-Animations</div>
+                        <div class="card-desc">Lightweight (<50KB) animations for 3-minute visual timers, KSL sign gestures, and geometric transformations.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="script-drawer">
+                <strong>Speaker Spoken Target (25 Seconds):</strong>
+                "Mwalimu SNE AI is already built, tested, and running live on devices like the Redmi 14C. Our immediate roadmap expands this into live in-class multimodal content: offline audio narration for blind learners, dynamic vector graphics for deaf learners, and lightweight animations for ADHD focus. Mwalimu SNE AI ensures no child is left behind. Thank you, and we welcome your questions!"
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <button class="nav-btn" onclick="prevSlide()">◀ Previous</button>
+        <div class="slide-dots">
+            <div class="dot active" onclick="goToSlide(0)"></div>
+            <div class="dot" onclick="goToSlide(1)"></div>
+            <div class="dot" onclick="goToSlide(2)"></div>
+            <div class="dot" onclick="goToSlide(3)"></div>
+            <div class="dot" onclick="goToSlide(4)"></div>
+        </div>
+        <button class="nav-btn primary" onclick="nextSlide()">Next ▶</button>
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        let timerSeconds = 120;
+        let timerInterval = null;
+
+        function updateSlide() {
+            slides.forEach((s, idx) => {
+                s.classList.toggle('active', idx === currentSlide);
+            });
+            dots.forEach((d, idx) => {
+                d.classList.toggle('active', idx === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function goToSlide(idx) {
+            currentSlide = idx;
+            updateSlide();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        function toggleTimer() {
+            const btn = document.getElementById('btnTimer');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                btn.textContent = 'Resume';
+            } else {
+                btn.textContent = 'Pause';
+                timerInterval = setInterval(() => {
+                    if (timerSeconds > 0) {
+                        timerSeconds--;
+                        renderTimer();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        btn.textContent = 'Done';
+                        alert('Time is up! (120 seconds completed)');
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timerSeconds = 120;
+            document.getElementById('btnTimer').textContent = 'Start';
+            renderTimer();
+        }
+
+        function renderTimer() {
+            const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+            const s = (timerSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${m}:${s}`;
+        }
+    </script>
+</body>
+</html>

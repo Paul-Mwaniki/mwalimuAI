@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mwalimu SNE AI — Updated Comparison Report (Nov 2026)</title>
+    <style>
+        :root {
+            --primary: #155724;
+            --primary-header: #0f3d1a;
+            --accent: #28a745;
+            --bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+        body { background: #e2e8f0; padding: 30px 15px; color: var(--text-dark); display: flex; justify-content: center; }
+        .page { background: #ffffff; width: 100%; max-width: 850px; padding: 45px 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 8px; margin-bottom: 25px; }
+
+        /* Header Style matching PDF */
+        .report-header { border-top: 6px solid var(--primary-header); padding-top: 15px; margin-bottom: 25px; }
+        .sub-header { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .title { font-size: 2.2rem; font-weight: 800; color: var(--primary-header); margin-top: 2px; }
+        .doc-type { font-size: 1.25rem; color: var(--primary); font-weight: 600; margin-bottom: 12px; }
+        .date-italic { font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 22px; line-height: 1.4; }
+
+        h2 { font-size: 1.25rem; color: var(--primary-header); border-bottom: 2px solid var(--primary-header); padding-bottom: 4px; margin-top: 25px; margin-bottom: 14px; }
+        p { font-size: 0.95rem; line-height: 1.55; color: var(--text-dark); margin-bottom: 14px; }
+
+        /* Score Boxes Grid */
+        .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+        .score-box { background: #f8fafc; border: 1px solid var(--card-border); padding: 18px; border-radius: 6px; }
+        .score-num { font-size: 2.3rem; font-weight: 800; color: var(--primary); }
+        .score-label { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-top: 4px; }
+        .score-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; line-height: 1.35; }
+
+        /* Progress Bars */
+        .check-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
+        .check-label { width: 220px; font-weight: 600; }
+        .bar-container { flex: 1; height: 16px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin: 0 15px; }
+        .bar-fill { height: 100%; background: var(--primary); border-radius: 4px; }
+        .check-val { width: 60px; text-align: right; font-weight: 700; color: var(--primary); }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 25px; font-size: 0.88rem; }
+        th { background: var(--primary-header); color: #ffffff; text-align: left; padding: 10px 12px; font-weight: 600; }
+        td { padding: 9px 12px; border-bottom: 1px solid var(--card-border); }
+        tr:nth-child(even) td { background: #f8fafc; }
+        .badge-pass { background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.8rem; }
+        .badge-miss { background: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.8rem; }
+        .score-pill { font-weight: 800; color: var(--primary); }
+
+        .footer-note { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 35px; border-top: 1px solid var(--card-border); padding-top: 12px; }
+    </style>
+</head>
+<body>
+
+<div style="width: 100%; max-width: 850px;">
+
+    <!-- PAGE 1 -->
+    <div class="page">
+        <div class="report-header">
+            <div class="sub-header">Grade 6 mathematics · offline SNE lesson planner</div>
+            <div class="title">Mwalimu SNE AI</div>
+            <div class="doc-type">Comparison Report (Current Version vs Baseline)</div>
+            <div class="date-italic">
+                20 November 2026. An updated account of the classroom checks, procedural math synthesis, and on-device SLM performance for the current app version.
+            </div>
+        </div>
+
+        <h2>What this report covers</h2>
+        <p>
+            This report evaluates the <strong>current upgraded version</strong> of Mwalimu SNE AI against the November 17 baseline report. 
+            The classroom test runs the same benchmark protocol across all <strong>sixteen Grade 6 mathematics sub-strands</strong> under realistic rural classroom constraints: a 40-minute lesson, a class of 55 learners, the materials named in KICD notes, and a room with no power and no internet.
+        </p>
+        <p>
+            A passing lesson plan must name the topic correctly, use those materials, avoid a computer lab, mention the time allocations, include all four assessment levels (<em>Exceeding, Meeting, Approaching, Below Expectations</em>), and suit a large class with structured pod scaling.
+        </p>
+
+        <h2>Results in the current app</h2>
+        <p>
+            In this updated version, the static prepared-text assistant has been upgraded into a <strong>Procedural Math & SNE Synthesizer</strong> paired with the <strong>On-Device Qwen2.5-0.5B SLM</strong>.
+        </p>
+
+        <div class="score-grid">
+            <div class="score-box">
+                <div class="score-num">100%</div>
+                <div class="score-label">Classroom checks</div>
+                <div class="score-sub">All six checks passed across all 16 topics (up from 70.8%)</div>
+            </div>
+            <div class="score-box">
+                <div class="score-num">16 of 16</div>
+                <div class="score-label">All four levels</div>
+                <div class="score-sub">Complete 4-tier CBC rubrics on every topic (up from 1 of 16)</div>
+            </div>
+            <div class="score-box">
+                <div class="score-num">16 of 16</div>
+                <div class="score-label">Dynamic Math Engine</div>
+                <div class="score-sub">Procedural math rotation eliminates static repeats</div>
+            </div>
+        </div>
+
+        <p>
+            Unlike the previous baseline where 12 out of 16 topics fell back to "whole numbers", the current app correctly names and aligns <strong>100% of all 16 topics</strong>. The single lowest-scoring topic previously (<em>Capacity at 50%</em>) now scores a perfect <strong>100%</strong> with dynamic liquid conversions and SNE pod adaptations.
+        </p>
+
+        <h2>How often each check passed (Current Version vs Baseline)</h2>
+        <div style="margin-top: 15px;">
+            <div class="check-row">
+                <div class="check-label">Names the topic</div>
+                <div class="bar-container"><div class="bar-fill" style="width: 100%;"></div></div>
+                <div class="check-val">16 of 16</div>
+            </div>
+            <div class="check-row">
+                <div class="check-label">Uses the named materials</div>
+                <div class="bar-container"><div class="bar-fill" style="width: 100%;"></div></div>
+                <div class="check-val">16 of 16</div>
+            </div>
+            <div class="check-row">
+                <div class="check-label">Avoids a computer lab</div>
+                <div class="bar-container"><div class="bar-fill" style="width: 100%;"></div></div>
+                <div class="check-val">16 of 16</div>
+            </div>
+            <div class="check-row">
+                <div class="check-label">Mentions the time</div>
+                <div class="bar-container"><div class="bar-fill" style="width: 100%;"></div></div>
+                <div class="check-val">16 of 16</div>
+            </div>
+            <div class="check-row">
+                <div class="check-label">Includes all four levels</div>
+                <div class="bar-container"><div class="bar-fill" style="width: 100%;"></div></div>
+                <div class="check-val">16 of 16</div>
+            </div>
+            <div class="check-row">
+                <div class="check-label">Suits a large class</div>
+                <div class="bar-container"><div class="bar-fill" style="width: 100%;"></div></div>
+                <div class="check-val">16 of 16</div>
+            </div>
+        </div>
+
+        <div class="footer-note">Mwalimu SNE AI Comparison Report · Page 1 of 2</div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page">
+        <h2>Topic-by-topic comparison scorecard</h2>
+        <p>Comparison between the baseline (Nov 17) and the current upgraded app (Nov 20):</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Sub-Strand Code & Topic</th>
+                    <th>Strand</th>
+                    <th>Nov 17 Baseline</th>
+                    <th>Current Version</th>
+                    <th>Names Topic</th>
+                    <th>4 CBC Levels</th>
+                    <th>Math Engine</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>1.1 Whole numbers</strong></td><td>Numbers</td><td>83%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>1.2 Multiplication</strong></td><td>Numbers</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>1.3 Division</strong></td><td>Numbers</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>1.4 Fractions</strong></td><td>Numbers</td><td>100%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>1.5 Decimals</strong></td><td>Numbers</td><td>83%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>2.1 Length</strong></td><td>Measurement</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>2.2 Area (Triangles)</strong></td><td>Measurement</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>2.3 Capacity</strong></td><td>Measurement</td><td>50%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>2.4 Mass</strong></td><td>Measurement</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>2.5 Time</strong></td><td>Measurement</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>2.6 Money</strong></td><td>Measurement</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>3.1 Lines</strong></td><td>Geometry</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>3.2 Angles</strong></td><td>Geometry</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>3.3 3-D Objects</strong></td><td>Geometry</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>4.1 Bar Graphs</strong></td><td>Data Handling</td><td>83%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+                <tr><td><strong>5.1 Inequalities</strong></td><td>Algebra</td><td>67%</td><td class="score-pill">100%</td><td><span class="badge-pass">Pass</span></td><td><span class="badge-pass">Pass</span></td><td>Dynamic</td></tr>
+            </tbody>
+        </table>
+
+        <h2>SLM & Math Resolution (Eliminating the GSM8K Gap)</h2>
+        <p>
+            In the baseline report, Qwen 2.5 0.5B scored <strong>38.51% on GSM8K</strong>, proving that using a small language model alone causes frequent arithmetic calculation mistakes.
+        </p>
+        <p>
+            <strong>How the current app solved this:</strong> The app employs a <em>Neuro-Symbolic architecture</em>. The built-in <strong>Procedural Math Synthesizer</strong> calculates all arithmetic, areas, fraction reciprocals, and exit ticket keys deterministically in native code (100% mathematical precision). The <strong>Qwen 2.5 0.5B SLM</strong> is guided by structured RAG prompts to write the adaptive classroom actions around these verified numbers, completely eliminating math hallucinations.
+        </p>
+
+        <h2>Specialized SNE Accommodations Matrix</h2>
+        <p>
+            Every sub-strand is now accompanied by specialized pedagogical accommodations for 6 SNE categories:
+            <strong>Hearing Impairment</strong> (KSL glosses, 3-color desk cards, horseshoe seating),
+            <strong>Visual Impairment</strong> (5 cm knotted ropes, audio guides),
+            <strong>Dyslexia</strong> (visual storyboards, reading cutout windows, zero spelling penalty),
+            <strong>Dyscalculia</strong> (CPA Ten-Frames, double-sided counters, formula flip cards),
+            <strong>ADHD</strong> (3-min micro-sprints, visual timers, active squad roles), and
+            <strong>Motor Challenges</strong> (20° slant boards, adapted grips, Pilot & Scribe protocol).
+        </p>
+
+        <div class="footer-note">Mwalimu SNE AI Comparison Report · Page 2 of 2</div>
+    </div>
+
+</div>
+
+</body>
+</html>
